@@ -16,6 +16,7 @@
 <h1>Easygoods</h1>
 
 <p><a href="products.php">alle producten</a></p>
+<p><a href="contact.php">Contact</a></p>
 
 </body>
 </html>
