@@ -1,5 +1,4 @@
 <?php
-
 ?>
 
 <!doctype html>
@@ -9,13 +8,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Products</title>
+    <title>Contact</title>
 </head>
 <body>
-<h1>Alle Prodcuten</h1>
+<h1>Contact</h1>
 
 <p><a href="index.php">Home</a></p>
-<p><a href="contact.php">Contact</a></p>
-
 </body>
 </html>
