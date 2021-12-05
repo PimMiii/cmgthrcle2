@@ -2,7 +2,6 @@
 
 ?>
 
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,14 +9,15 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
+    <title>Profile</title>
 </head>
 <body>
-<h1>Easygoods</h1>
+<h1>Login</h1>
 
-<p><a href="login.php">Login</a></p>
-<p><a href="products.php">Alle Producten</a></p>
-<p><a href="contact.php">Contact</a></p>
+<p><a href="index.php">Home</a></p>
+<p><a href="products.php">Producten</a></p>
+<p><a href="orderhistory.php">Order history</a></p>
+
 
 </body>
 </html>
