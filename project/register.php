@@ -12,7 +12,25 @@
     <title>Register</title>
 </head>
 <body>
-<h1>Login</h1>
+<h1> Register Now!</h1>
+
+<form action="" method="post">
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+    </div>
+    <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required>
+    </div>
+    <div>
+        <input type="submit" name="submit" id="submit">
+    </div>
+</form>
 
 <p><a href="index.php">Home</a></p>
 <p><a href="login.php">Login</a></p>
