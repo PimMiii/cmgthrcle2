@@ -1,5 +1,23 @@
 <?php
-
+    if(isset($_POST['submit'])) {
+        require_once "includes/database.php";
+        /** @var mysqli $db */
+        $errors = [];
+      // validate email
+        $email = mysqli_escape_string($db, $_POST['email']);
+        // sanitize email, by deleting all characters not allowed in an emailadress
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        // check if email is a valid emailadress
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "$email is a valid emailadress";
+        }
+        else {
+            echo "$email is not a valid emailadress";
+        }
+      // check if passwords are the same
+      // hash password
+      // send to database
+    }
 ?>
 
 <!doctype html>
