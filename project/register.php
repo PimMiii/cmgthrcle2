@@ -2,21 +2,57 @@
     if(isset($_POST['submit'])) {
         require_once "includes/database.php";
         /** @var mysqli $db */
-        $errors = [];
-      // validate email
+
+        $password = $_POST['password'];
         $email = mysqli_escape_string($db, $_POST['email']);
-        // sanitize email, by deleting all characters not allowed in an emailadress
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        // check if email is a valid emailadress
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "$email is a valid emailadress";
+
+      // validate email
+        if($email == ''){
+            $errors['email'] ="Voer een e-mailadres in" ;
         }
-        else {
-            echo "$email is not a valid emailadress";
+        else{
+            $email = mysqli_escape_string($db, $_POST['email']);
+            // sanitize email, by deleting all characters not allowed in an emailadress
+            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+            // check if email is a valid emailadress
+            if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo "$email is a valid emailadress";
+            }
+            else {
+
+                $errors['emailInvalid'] = "Voer een geldig e-mailadres in";
+            }
         }
-      // check if passwords are the same
-      // hash password
-      // send to database
+        // validate password
+        if($password== ''){
+            $errors['password'] = "Voer een wachtwoord in";
+        }
+        //Validate if confirmPassword field has been filled in
+        elseif ($_POST['confirmPassword'] == '') {
+            $errors['confirmPassword'] = "Vul nogmaals je wachtwoord in";
+        }
+        else{
+            // check if passwords are the same
+            $password = $_POST['password'];
+            if ($password === $_POST['confirmPassword']){
+                // hash password
+                $password = password_hash($password, PASSWORD_DEFAULT);
+            }
+            else {
+                $errors['passwordMatch'] = 'Ingevoerde wachtwoorden komen niet overeen';
+            }
+        }
+        // send data to db
+        if(empty($errors)) {
+            $query = "INSERT INTO users (email, password) VALUES ('$email', '$password')";
+
+            $result = mysqli_query($db, $query)
+            or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+
+            if ($result) {
+                header('Location: login.php');
+            }
+        }
     }
 ?>
 
@@ -35,15 +71,18 @@
 <form action="" method="post">
     <div>
         <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
+        <input type="email" name="email" id="email" value="<?= $email ?? '' ?>" required>
+        <span class="errors"><?= $errors['email'] || $errors['emailInvalid'] ?? '' ?></span>
     </div>
     <div>
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required>
+        <span class="errors"><?= $errors['password'] ?? NULL ?></span>
     </div>
     <div>
         <label for="confirmPassword">Confirm Password:</label>
         <input type="password" name="confirmPassword" id="confirmPassword" required>
+        <span class="errors"><?= $errors['confirmPassword'] || $errors['passwordMatch'] ?? '' ?></span>
     </div>
     <div>
         <input type="submit" name="submit" id="submit">
