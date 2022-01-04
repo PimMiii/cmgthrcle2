@@ -1,10 +1,14 @@
 <?php
-session_status();
+session_start();
 if(isset($_SESSION['LoggedInUser'])) {
     $login = true;
 }
 else {
     $login = false;
+}
+
+if ($login == true){
+    header('Location: profile.php');
 }
 
 if(isset($_POST['submit'])) {
@@ -43,6 +47,8 @@ if(isset($_POST['submit'])) {
                     'email' => $user['email'],
                     'id' => $user['id']
                 ];
+
+                header('Location: profile.php');
             }
             else {
                 $errors['loginFailed'] = 'De combinatie van email en wachtwoord is bij ons niet bekend';
