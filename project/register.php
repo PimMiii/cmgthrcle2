@@ -11,14 +11,14 @@ if(isset($_POST['submit'])) {
 
       // validate email
         if($email == ''){
-            $errors['email'] ="Voer een e-mailadres in" ;
+            $errors['email'] ="Voer een emailadres in" ;
         }
         else{
             // sanitize email, by deleting all characters not allowed in an emailadress
             $email = filter_var($email, FILTER_SANITIZE_EMAIL);
             // check if email is a valid emailadress
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors['emailInvalid'] = "Voer een geldig e-mailadres in";
+                $errors['emailInvalid'] = "Voer een geldig emailadres in";
             }
         }
         // validate password
@@ -47,7 +47,7 @@ if(isset($_POST['submit'])) {
             $result = mysqli_query($db, $query)
             or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
 
-            // send user to login page on successful registration
+            // redirect user to login page on successful registration
             if ($result) {
                 header('Location: login.php');
                 exit;

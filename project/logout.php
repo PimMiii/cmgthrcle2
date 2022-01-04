@@ -5,5 +5,5 @@ session_start();
 session_unset();
 session_destroy();
 
-// send client to the homepage
+// redirect client to the homepage
 header('Location: index.php');

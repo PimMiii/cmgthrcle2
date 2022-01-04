@@ -1,16 +1,24 @@
 <?php
 session_start();
-// check if there is a logged in user
+// check if there is a logged-in user
 if(isset($_SESSION['LoggedInUser'])) {
-    //check if user is admin, if true send to admin portal
+    //check if user is admin, if true redirect to admin portal
     if($_SESSION['LoggedInUser']['role']==1) {
         header('Location: admin.php');
     }
 
+/*
+ * needed query to grab the right profile through the given users.id
+ *
+ * SELECT profiles.*
+ * FROM users
+ * INNER JOIN profiles ON users.profile_id = profiles.id
+ * WHERE users.id = given_id;
+ */
 
 
 }
-//if no logged in user send client to login
+//if no logged-in user redirect client to login
 else {
     header('Location: login.php');
 }

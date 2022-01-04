@@ -4,7 +4,7 @@ session_start();
 if(isset($_SESSION['LoggedInUser'])){
     //check if user has admin role
     if($_SESSION['LoggedInUser']['role']!=1){
-        // send client to homepage
+        // redirect client to homepage
         header('Location: index.php');
     }
 }
