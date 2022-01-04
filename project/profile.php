@@ -1,6 +1,19 @@
 <?php
 session_start();
+// check if there is a logged in user
+if(isset($_SESSION['LoggedInUser'])) {
+    //check if user is admin, if true send to admin portal
+    if($_SESSION['LoggedInUser']['role']==1) {
+        header('Location: admin.php');
+    }
 
+
+
+}
+//if no logged in user send client to login
+else {
+    header('Location: login.php');
+}
 ?>
 
 <!doctype html>
