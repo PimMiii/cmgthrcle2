@@ -15,6 +15,7 @@ session_start();
 <body>
 <h1>Mijn Profiel</h1>
 
+<p><a href="logout.php">Uitloggen</a></p>
 <p><a href="index.php">Home</a></p>
 <p><a href="products.php">Producten</a></p>
 <p><a href="orderhistory.php">Order history</a></p>
