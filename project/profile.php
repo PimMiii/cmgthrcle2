@@ -13,7 +13,7 @@ session_start();
     <title>Profile</title>
 </head>
 <body>
-<h1>Login</h1>
+<h1>Mijn Profiel</h1>
 
 <p><a href="index.php">Home</a></p>
 <p><a href="products.php">Producten</a></p>
