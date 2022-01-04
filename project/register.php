@@ -47,6 +47,7 @@ if(isset($_POST['submit'])) {
             $result = mysqli_query($db, $query)
             or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
 
+            // send user to login page on successful registration
             if ($result) {
                 header('Location: login.php');
                 exit;
