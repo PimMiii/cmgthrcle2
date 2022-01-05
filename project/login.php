@@ -32,7 +32,7 @@ if(isset($_POST['submit'])) {
 
     if (empty($errors)){
         // use email to get the records from DB
-        $query = "SELECT * FROM users WHERE email='$email';";
+        $query = "SELECT email,password, id, role FROM users WHERE email='$email';";
         $result = mysqli_query($db, $query)
         or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
         // check if a record has been found
@@ -46,8 +46,7 @@ if(isset($_POST['submit'])) {
                 $_SESSION['LoggedInUser'] = [
                     'email' => $user['email'],
                     'id' => $user['id'],
-                    'role' => $user['role'],
-                    'profile_id' => $user['profile_id']
+                    'role' => $user['role']
                 ];
 
                 header('Location: profile.php');

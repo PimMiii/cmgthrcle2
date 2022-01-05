@@ -15,7 +15,7 @@ if(isset($_SESSION['LoggedInUser'])) {
     $result = mysqli_query($db, $query)
     or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
     if(mysqli_num_rows($result) < 1){
-        header('Location: editprofile.php');
+        header('Location: profile/edit.php');
     }
     else {
         $profile = mysqli_fetch_assoc($result);
