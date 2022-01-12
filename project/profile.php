@@ -63,6 +63,7 @@ else {
 </div>
 
 <p><a href="logout.php">Uitloggen</a></p>
+<p><a href="profile/edit.php">Profiel aanpassen</a></p>
 <p><a href="index.php">Home</a></p>
 <p><a href="products.php">Producten</a></p>
 <p><a href="orderhistory.php">Order history</a></p>
