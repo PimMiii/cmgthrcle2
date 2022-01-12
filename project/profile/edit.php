@@ -7,20 +7,20 @@ require_once '../includes/database.php';
 $errors = [];
 
 
-//check if client is logged in as user
+// check if client is logged in as user
 if (isset($_SESSION['LoggedInUser'])) {
     //create user and fill it with information from $_SESSION
     $user = [];
     $user['id'] = $_SESSION['LoggedInUser']['id'];
     $user['email'] = $_SESSION['LoggedInUser']['email'];
 } else {
-    //redirect client to homepage.
+    // redirect client to homepage.
     header('Location: ../index.php');
 }
 // handle the POST data
 if (isset($_POST['submit'])) {
     if ($_POST['pwverification'] != '') {
-        //Retrieve passwordhash from database
+        // retrieve passwordhash from database
         $id = $user['id'];
         $query = "SELECT password FROM users WHERE id='$id';";
         $result = mysqli_query($db, $query)
@@ -58,17 +58,59 @@ if (isset($_POST['submit'])) {
             if ($changed_profile['city'] == '') {
                 $errors['city'] = "Voer uw woonplaats in";
             }
-            // validate input
-            // check if email is a valid emailadress
+            // validate user input
+
+            // first names can be a maximum of 50 characters.
+            // to help user trim whitespace from beginning and end, and capitalize first letter.
+            $changed_profile['first_name'] = ucfirst(trim($changed_profile['first_name']));
+            if (strlen($changed_profile['first_name']) > 50) {
+                $errors['first_name'] = "Voornaam te lang, maximaal 50 tekens.";
+            }
+            // last names can be a maximum of 75 characters.
+            // to help user trim whitespace from beginning and end
+            $changed_profile['last_name'] = trim($changed_profile['last_name']);
+            if (strlen($changed_profile['last_name']) > 75) {
+                $errors['last_name'] = "Achternaam te lang, maximaal 75 tekens.";
+            }
+            // check if email is in a valid emailadress format
             if (!filter_var($changed_profile['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = "Voer een geldig emailadres in";
             }
-            // check postalcode: pattern 1234AB
-            // and help user by stripping (white)spaces and making letters uppercase.
+            // street names can be a maximum of 75 characters
+            // to help user trim whitespace from beginning and end, and capitalize first letter
+            $changed_profile['street'] = trim($changed_profile['street']);
+            if (strlen($changed_profile['street']) > 75) {
+                $errors['street'] = "Straatnaam te lang, maximaal 75 tekens.";
+            }
+            // house numbers can be a maximum of 7 characters
+            // and must start with, and include, a number
+            // to help the user trim whitespaces from the beginning and end
+            $pattern_has_number = "/[0-9]/";
+            $pattern_begin_with_number = "/^[0-9]/";
+
+            $changed_profile['house_number'] = trim($changed_profile['house_number']);
+            if (strlen($changed_profile['house_number']) > 7) {
+                $errors['house_number'] = "Huisnummer te lang, maximaal 7 tekens.";
+            }
+            if (!preg_match($pattern_has_number, $changed_profile['house_number'])) {
+                $errors['house_number'] = "Huisnummer moet tenminste één nummer bevatten.";
+            }
+            if (!preg_match($pattern_begin_with_number, $changed_profile['house_number'])) {
+                $errors['house_number'] = "Huisnummer moet beginnen met een nummer.";
+            }
+            // postal code must match pattern '1234AB'
+            // therefore it can be a maximum of 6 characters (implicitly enforced)
+            // to help user strip (white)spaces and make letters uppercase.
             $pattern = "/^[0-9][0-9][0-9][0-9][a-z][a-z]$/i";
-            $changed_profile['postal_code'] = strtoupper(str_replace(' ','',$changed_profile['postal_code']));
-            if(!preg_match($pattern, $changed_profile['postal_code'])){
-                $errors['postal_code'] = "Voer een geldidge postcode in. bijv. 1234AB";
+            $changed_profile['postal_code'] = strtoupper(str_replace(' ', '', $changed_profile['postal_code']));
+            if (!preg_match($pattern, $changed_profile['postal_code'])) {
+                $errors['postal_code'] = "Voer een geldige postcode in. bijv. 1234AB";
+            }
+            // city names can be a maximum of 60 characters.
+            // to help user strip whitespaces from beginning and end
+            $changed_profile['city'] = trim($changed_profile['city']);
+            if (strlen($changed_profile['city']) > 75) {
+                $errors['city'] = "Woonplaats te lang, maximaal 60 tekens.";
             }
 
             // if there are no errors, post data to database
@@ -95,9 +137,53 @@ if (isset($_POST['submit'])) {
                         '" . $changed_profile['email'] . "'
                         );";
 
+                    // add it to the database
                     $result = mysqli_query($db, $query)
                     or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+                    // update user with profile id
                     $profile_id = mysqli_insert_id($db);
+                    // update user in db
+                    if (isset($_POST['make_login'])) {
+                        $query = "UPDATE `users` SET `profile_id` = '$profile_id', `email` = '". $changed_profile['email'] ."' WHERE `id` = '$id';";
+                    } else {
+                        $query = "UPDATE `users` SET `profile_id` = '$profile_id' WHERE `id` = '$id';";
+                    }
+                    $result = mysqli_query($db, $query)
+                    or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+
+                    $_SESSION['LoggedInUser']['new_user'] = null;
+                    // add profile_id to $_SESSION and $user
+                    $_SESSION['LoggedInUser']['profile_id'] = $profile_id;
+                    $user['profile_id'] = $_SESSION['LoggedInUser']['profile_id'];
+
+                    //redirect client back to profile page now with the changes they made
+                    header('Location ../profile.php');
+
+                } else {
+                    // there's an existing profile to update
+                    $query =
+                        "UPDATE `profiles`
+                        SET
+                       `first_name` = '" . $changed_profile['first_name'] . "',
+                       `last_name` = '" . $changed_profile['last_name'] . "',
+                       `street` = '" . $changed_profile['street'] . "',
+                       `house_number` = '" . $changed_profile['house_number'] . "',
+                       `postal_code` = '" . $changed_profile['postal_code'] . "',
+                       `city` = '" . $changed_profile['city'] . "',
+                       `email` = '" . $changed_profile['email'] . "' 
+                       WHERE `id` = '". $_SESSION['LoggedInUser']['profile_id'] ."';";
+                    // update profile
+                    $result = mysqli_query($db, $query)
+                    or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+                    // update login-email if requested by user
+                    if (isset($_POST['make_login'])) {
+                        $query = "UPDATE `users` SET `email` = '" . $changed_profile['email'] . "' WHERE `id` = '$id';";
+                        $result = mysqli_query($db, $query)
+                        or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+                    }
+
+                    //redirect client back to profile page now with the changes they made
+                    header('Location ../profile.php');
                 }
 
             }
@@ -111,7 +197,7 @@ if (isset($_POST['submit'])) {
         $errors['pwverification'] = "Voer uw wachtwoord ter verificatie.";
     }
 } else {
-//Retrieve profile information from database
+// retrieve profile information from database
     $id = $user['id'];
     $query = "SELECT profiles.* FROM users INNER JOIN profiles ON users.profile_id = profiles.id WHERE users.id = $id";
     $result = mysqli_query($db, $query)
@@ -121,41 +207,9 @@ if (isset($_POST['submit'])) {
         $_SESSION['LoggedInUser']['new_user'] = true;
     } else {
         $user['profile'] = mysqli_fetch_assoc($result);
+        $_SESSION['LoggedInUser']['profile_id'] = $user['profile']['id'];
     }
 }
-
-//Als er profielgegevens uit de database zijn gehaald:
-//    sla deze op in een 'userprofile'-array.
-
-//Stel een formulier op dat om de volgende gegevens vraagt:
-/*
--Voornaam
--Achternaam
--Straat
--Huisnummer
--Woonplaats
--Postcode
--Email
--Wachtwoord ter verificatie
--submit knop met actie: postback
-En gebruik de waarden uit het 'userprofile'-array als standaardwaarden voor de bovengenoemde velden.
-*/
-
-//Sanitise de ingevoerde gegevens onder andere door htmlentites() en mysqli_escape_string() te gebruiken.
-//Valideer de gegevens, en check of wachtwoord overeenkomt met het in de database opgeslagen wachtwoord
-//Bij Errors:
-//    toon deze aan de gebruiker door error tekst te tonen naast het foutief ingevulde veld.
-//Zijn er geen Errors:
-//    Als `userprofile`-array gevuld is (dus als er al een profiel is) update deze:
-//        Stel een UPDATE query op met de opgegeven gegevens.
-//Als er nog geen profiel is:
-//        Stel een INSERT INTO query op met de opgegeven gegevens.
-//Voer query uit.
-//Bij Error:
-//        toon Error
-
-//Als alles goed is gegaan:
-//    redirect gebruiker naar profielpagina
 
 ?>
 
@@ -177,13 +231,13 @@ En gebruik de waarden uit het 'userprofile'-array als standaardwaarden voor de b
         <div>
             <label for="first_name">Voornaam: </label>
             <input type="text" name="first_name" id="first_name"
-                   value="<?= $changed_profile['first_name'] ?? $user['profile']['first_name'] ?? '' ?>">
+                   value="<?= $changed_profile['first_name'] ?? $user['profile']['first_name'] ?? '' ?>" required>
             <span class="errors"><?= $errors['first_name'] ?? '' ?></span>
         </div>
         <div>
             <label for="last_name">Achternaam: </label>
             <input type="text" name="last_name" id="last_name"
-                   value="<?= $changed_profile['last_name'] ?? $user['profile']['last_name'] ?? '' ?>">
+                   value="<?= $changed_profile['last_name'] ?? $user['profile']['last_name'] ?? '' ?>" required>
             <span class="errors"><?= $errors['last_name'] ?? '' ?></span>
         </div>
     </div>
@@ -248,4 +302,3 @@ En gebruik de waarden uit het 'userprofile'-array als standaardwaarden voor de b
 <p><a href="../orderhistory.php">Order history</a></p>
 </body>
 </html>
-
