@@ -62,41 +62,51 @@ if (isset($_POST['submit'])) {
             // check if email is a valid emailadress
             if (!filter_var($changed_profile['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = "Voer een geldig emailadres in";
+            }
+            // check postalcode: pattern 1234AB
+            // and help user by stripping (white)spaces and making letters uppercase.
+            $pattern = "/^[0-9][0-9][0-9][0-9][a-z][a-z]$/i";
+            $changed_profile['postal_code'] = strtoupper(str_replace(' ','',$changed_profile['postal_code']));
+            if(!preg_match($pattern, $changed_profile['postal_code'])){
+                $errors['postal_code'] = "Voer een geldidge postcode in. bijv. 1234AB";
+            }
 
-                // post data to database
+            // if there are no errors, post data to database
+            if (empty($errors)) {
                 // check if there was a profile found on initial page load
                 if (isset($_SESSION['LoggedInUser']['new_user'])) {
                     // this is a new profile.
-                    $query = "INSERT INTO `profiles`(
-                                                        `first_name`,
-                                                        `last_name`,
-                                                        `street`,
-                                                        `house_number`,
-                                                        `postal_code`,
-                                                        `city`,
-                                                        `email`
-                                                        )
-                               VALUES(
-                                                        `$changed_profile['first_name']`,
-                                                        `$changed_profile['last_name']`,
-                                                        `$changed_profile['street']`,
-                                                        `$changed_profile['house_number']`,
-                                                        `$changed_profile['postal_code']`,
-                                                        `$changed_profile['city']`,
-                                                        `$changed_profile['email']`
-);";
+                    $query =
+                        "INSERT INTO `profiles`(
+                       `first_name`,
+                       `last_name`,
+                       `street`,
+                       `house_number`,
+                       `postal_code`,
+                       `city`,
+                       `email`
+                       ) VALUES(
+                        '" . $changed_profile['first_name'] . "',
+                        '" . $changed_profile['last_name'] . "',
+                        '" . $changed_profile['street'] . "',
+                        '" . $changed_profile['house_number'] . "',
+                        '" . $changed_profile['postal_code'] . "',
+                        '" . $changed_profile['city'] . "',
+                        '" . $changed_profile['email'] . "'
+                        );";
+
                     $result = mysqli_query($db, $query)
                     or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
                     $profile_id = mysqli_insert_id($db);
-
-
                 }
 
-
-            } else {
-                $errors['pwverification'] = "Dit wachtwoord is niet bij ons bekend.";
             }
+
+
+        } else {
+            $errors['pwverification'] = "Dit wachtwoord is niet bij ons bekend.";
         }
+
     } else {
         $errors['pwverification'] = "Voer uw wachtwoord ter verificatie.";
     }
@@ -166,12 +176,14 @@ En gebruik de waarden uit het 'userprofile'-array als standaardwaarden voor de b
         <h2>Naamgegevens</h2>
         <div>
             <label for="first_name">Voornaam: </label>
-            <input type="text" name="first_name" id="first_name" value="<?= $user['profile']['first_name'] ?? '' ?>" >
+            <input type="text" name="first_name" id="first_name"
+                   value="<?= $changed_profile['first_name'] ?? $user['profile']['first_name'] ?? '' ?>">
             <span class="errors"><?= $errors['first_name'] ?? '' ?></span>
         </div>
         <div>
             <label for="last_name">Achternaam: </label>
-            <input type="text" name="last_name" id="last_name" value="<?= $user['profile']['last_name'] ?? '' ?>" >
+            <input type="text" name="last_name" id="last_name"
+                   value="<?= $changed_profile['last_name'] ?? $user['profile']['last_name'] ?? '' ?>">
             <span class="errors"><?= $errors['last_name'] ?? '' ?></span>
         </div>
     </div>
@@ -179,7 +191,9 @@ En gebruik de waarden uit het 'userprofile'-array als standaardwaarden voor de b
         <h2>E-mailgegevens</h2>
         <div>
             <label for="email">E-mail adres: </label>
-            <input type="email" name="email" id="email" value="<?= $user['profile']['email'] ?? $user['email'] ?? '' ?>" required>
+            <input type="email" name="email" id="email"
+                   value="<?= $changed_profile['email'] ?? $user['profile']['email'] ?? $user['email'] ?? '' ?>"
+                   required>
             <span class="errors"><?= $errors['email'] ?? '' ?></span>
         </div>
         <div>
@@ -191,35 +205,40 @@ En gebruik de waarden uit het 'userprofile'-array als standaardwaarden voor de b
         <h2>Adresgegevens</h2>
         <div>
             <label for="street">Straat: </label>
-            <input type="text" name="street" id="street"value="<?= $user['profile']['street'] ?? '' ?>" required>
+            <input type="text" name="street" id="street"
+                   value="<?= $changed_profile['street'] ?? $user['profile']['street'] ?? '' ?>" required>
             <span class="errors"><?= $errors['street'] ?? '' ?></span>
         </div>
         <div>
             <label for="house_number">Huisnummer: </label>
-            <input type="text" name="house_number" id="house_number" value="<?= $user['profile']['house_number'] ?? '' ?>" required>
+            <input type="text" name="house_number" id="house_number"
+                   value="<?= $changed_profile['house_number'] ?? $user['profile']['house_number'] ?? '' ?>" required>
             <span class="errors"><?= $errors['house_number'] ?? '' ?></span>
         </div>
         <div>
-            <label for="streetname">Postcode: </label>
-            <input type="text" name="postal_code" id="postal_code" value="<?= $user['profile']['postal_code'] ?? '' ?>"required>
+            <label for="postal_code">Postcode: </label>
+            <input type="text" name="postal_code" id="postal_code"
+                   value="<?= $changed_profile['postal_code'] ?? $user['profile']['postal_code'] ?? '' ?>"
+                   required>
             <span class="errors"><?= $errors['postal_code'] ?? '' ?></span>
         </div>
         <div>
             <label for="city">Woonplaats: </label>
-            <input type="text" name="city" id="city" value="<?= $user['profile']['city'] ?? '' ?>" required>
+            <input type="text" name="city" id="city"
+                   value="<?= $changed_profile['city'] ?? $user['profile']['city'] ?? '' ?>" required>
             <span class="errors"><?= $errors['city'] ?? '' ?></span>
         </div>
     </div>
     <div>
         <div>
             <h2> Verificatie</h2>
-        <div>
-            <label for="pwverification">Voer uw wachtwoord in: </label>
-            <input type="password" name="pwverification" id="pwverification" required>
-            <span class="errors"><?= $errors['pwverification'] ?? '' ?></span>
+            <div>
+                <label for="pwverification">Voer uw wachtwoord in: </label>
+                <input type="password" name="pwverification" id="pwverification" required>
+                <span class="errors"><?= $errors['pwverification'] ?? '' ?></span>
+            </div>
+            <input type="submit" name="submit" id="submit" value="Registreren">
         </div>
-        <input type="submit" name="submit" id="submit" value="Registreren">
-    </div>
     </div>
 </form>
 
