@@ -146,8 +146,16 @@ if (isset($_POST['submit'])) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mijn Profiel</title>
+    <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
+<nav>
+    <div><a href="../index.php"><img src="../images/logo.bmp" alt="Homepage" class="logo"></a></div>
+    <div><a href="../products.php">Producten</a></div>
+    <div><a href="../logout.php">Uitloggen</a></div>
+    <div><a href="../orderhistory.php">Order history</a></div>
+</nav>
+<div class="main">
 <h1>Profiel Aanpassen</h1>
 
 <form action="" method="post">
@@ -221,9 +229,7 @@ if (isset($_POST['submit'])) {
     </div>
 </form>
 
-<p><a href="../logout.php">Uitloggen</a></p>
-<p><a href="../index.php">Home</a></p>
-<p><a href="../products.php">Producten</a></p>
-<p><a href="../orderhistory.php">Order history</a></p>
+
+</div>
 </body>
 </html>

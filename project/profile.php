@@ -35,8 +35,19 @@ else {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profile</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<nav>
+    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepage" class="logo"></a></div>
+    <div><a href="logout.php">Uitloggen</a></div>
+    <div><a href="profile/edit.php">Profiel aanpassen</a></div>
+
+    <div><a href="products.php">Producten</a></div>
+    <div><a href="orderhistory.php">Order history</a></div>
+</nav>
+<div class="main">
+
 <h1>Mijn Profiel</h1>
 <div>
     <table style="width: 100%">
@@ -62,12 +73,8 @@ else {
     </table>
 </div>
 
-<p><a href="logout.php">Uitloggen</a></p>
-<p><a href="profile/edit.php">Profiel aanpassen</a></p>
-<p><a href="index.php">Home</a></p>
-<p><a href="products.php">Producten</a></p>
-<p><a href="orderhistory.php">Order history</a></p>
 
 
+</div>
 </body>
 </html>

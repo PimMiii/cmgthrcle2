@@ -75,24 +75,31 @@ if(isset($_POST['submit'])) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<nav>
+    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepage" class="logo"></a></div>
+</nav>
+<div class="main">
 <h1>Login</h1>
 <form action="" method="post">
     <div>
         <label for="email">E-Mail:</label>
         <input type="text" name="email" id="email" required>
+        <span class="errors"> <?=$errors['loginFailed'] ?? ''?> </span>
     </div>
     <div>
         <label for="password">Wachtwoord:</label>
         <input type="password" name="password" id="password" required>
     </div>
     <div>
-        <input type="submit" name="submit" id="login" value="Login">
+        <input type="submit" name="submit" id="login" value="Login"
+
     </div>
+    <div><a href="register.php">Register</a></div>
 </form>
-<p><a href="index.php">Home</a></p>
-<p><a href="register.php">Register</a></p>
-<p><a href="profile.php"> Profile</a></p>
+
+</div>
 </body>
 </html>

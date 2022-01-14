@@ -10,10 +10,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Contact</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<nav>
+    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepage" class="logo"></a></div>
+</nav>
+<div class="main">
 <h1>Contact</h1>
-
-<p><a href="index.php">Home</a></p>
+</div>
 </body>
 </html>

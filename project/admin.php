@@ -4,7 +4,7 @@ session_start();
 if(isset($_SESSION['LoggedInUser'])){
     //check if user has admin role
     if($_SESSION['LoggedInUser']['role']!=1){
-        // redirect client to homepage
+        // redirect client to Homepage
         header('Location: index.php');
     }
 }
@@ -19,12 +19,18 @@ if(isset($_SESSION['LoggedInUser'])){
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<nav>
+    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepage" class="logo"></a></div>
+    <div><a href="logout.php">Uitloggen</a></div>
+</nav>
+<div class="main">
 <h1>Adminportaal</h1>
 
 <p>Welkom admin</p>
-<p><a href="logout.php">Uitloggen</a></p>
-<p><a href="index.php">Home</a></p>
+
+</div>
 </body>
 </html>

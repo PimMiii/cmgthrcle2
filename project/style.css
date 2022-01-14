@@ -1,0 +1,152 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #BFDFFF;
+    color: #545454;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+nav {
+    position: fixed;
+    width: 100vw;
+    height: 75px;
+    top: 0;
+    background-color: #545454;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: space-around;
+
+
+}
+
+a {
+    color: #FFFFFF;
+}
+
+a:hover {
+    color: rgb(12, 116, 137);
+}
+
+nav a {
+    text-decoration: none;
+}
+
+
+nav div {
+    padding: 8px;
+    margin: auto
+
+}
+.logo {
+    width: 158.02px;
+    height: 38px;
+    border-radius: 5px;
+
+}
+
+.main {
+    background-color: #FFFFFF;
+    width: 75vw;
+    margin: auto;
+    padding: 10px;
+
+}
+
+.errors {
+    color: #FF5A5F;
+    font-size: 80%;
+}
+form {
+    border-radius: 5px;
+    box-shadow: 0px 5px 4px #00000025;
+    padding: 5vh 5vw;
+    margin: 5vh 5vw;
+
+}
+
+
+h1 {
+    margin-top: 4px;
+    padding-top: 10vh;
+    font-size: 2.8em;
+    text-align: center;
+    font-family: serif;
+    text-align: center;
+    text-transform: uppercase;
+
+
+}
+h2 {
+    margin-top: 4px;
+}
+h3 {
+    margin-top: 2px;
+    font-size: 1.05em;
+}
+
+section {
+    border-radius: 15px 30px 15px 5px;
+    background-color: rgb(226, 232, 221);
+    box-shadow: 2px 4px rgb(12, 116, 137);
+    padding: 20px;
+    margin: 20px auto;
+    color: rgb(22, 22, 66);
+    font-size: 1.1em;
+    max-width: 800px;
+}
+
+
+
+.imagegallery {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.imagegallery figure {
+    display: block;
+}
+
+.imagegallery img {
+    width: 100%;
+    height: 200px;
+    border-radius: 20px;
+    border: 2px solid rgb(17, 157, 164);
+}
+
+footer {
+    background-color: rgb(23, 26, 33);
+    font-family: "Montserrat", sans-serif;
+    color: rgb(17, 157, 164);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 15px;
+    text-align: center;
+}
+
+footer div #icons {
+    display: flex;
+    justify-content: center;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+figcaption {
+    color: rgb(23, 26, 33);
+    font-size: 0.7em;
+    font-style: italic;
+    text-align: center;
+}
