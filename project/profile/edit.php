@@ -2,6 +2,7 @@
 session_start();
 
 require_once '../includes/database.php';
+require_once '../includes/profilevalidation.php';
 /** @var mysqli $db */
 
 $errors = [];
@@ -19,6 +20,16 @@ if (isset($_SESSION['LoggedInUser'])) {
 }
 // handle the POST data
 if (isset($_POST['submit'])) {
+    // sanitize input
+    $changed_profile = array(
+        'first_name' => htmlentities(mysqli_escape_string($db, $_POST['first_name'])),
+        'last_name' => htmlentities(mysqli_escape_string($db, $_POST['last_name'])),
+        'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+        'street' => htmlentities(mysqli_escape_string($db, $_POST['street'])),
+        'house_number' => htmlentities(mysqli_escape_string($db, $_POST['house_number'])),
+        'postal_code' => htmlentities(mysqli_escape_string($db, $_POST['postal_code'])),
+        'city' => htmlentities(mysqli_escape_string($db, $_POST['city'])));
+
     if ($_POST['pwverification'] != '') {
         // retrieve passwordhash from database
         $id = $user['id'];
@@ -29,90 +40,11 @@ if (isset($_POST['submit'])) {
         // verify password
         $password = $_POST['pwverification'];
         if (password_verify($password, $hashed_pw['password'])) {
-            // sanitize input
-            $changed_profile = array(
-                'first_name' => mysqli_escape_string($db, $_POST['first_name']),
-                'last_name' => mysqli_escape_string($db, $_POST['last_name']),
-                'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
-                'street' => mysqli_escape_string($db, $_POST['street']),
-                'house_number' => mysqli_escape_string($db, $_POST['house_number']),
-                'postal_code' => mysqli_escape_string($db, $_POST['postal_code']),
-                'city' => mysqli_escape_string($db, $_POST['city'])
-            );
-            //check if fields are empty
-            if ($changed_profile['first_name'] == '') {
-                $errors['first_name'] = "Voer uw voornaam in";
-            }
-            if ($changed_profile['last_name'] == '') {
-                $errors['last_name'] = "Voer uw achternaam in";
-            }
-            if ($changed_profile['street'] == '') {
-                $errors['street'] = "Voer de straat waar u woont in";
-            }
-            if ($changed_profile['house_number'] == '') {
-                $errors['house_number'] = "Voer uw huisnummer in";
-            }
-            if ($changed_profile['postal_code'] == '') {
-                $errors['postal_code'] = "Voer uw postcode in";
-            }
-            if ($changed_profile['city'] == '') {
-                $errors['city'] = "Voer uw woonplaats in";
-            }
-            // validate user input
 
-            // first names can be a maximum of 50 characters.
-            // to help user trim whitespace from beginning and end, and capitalize first letter.
-            $changed_profile['first_name'] = ucfirst(trim($changed_profile['first_name']));
-            if (strlen($changed_profile['first_name']) > 50) {
-                $errors['first_name'] = "Voornaam te lang, maximaal 50 tekens.";
-            }
-            // last names can be a maximum of 75 characters.
-            // to help user trim whitespace from beginning and end
-            $changed_profile['last_name'] = trim($changed_profile['last_name']);
-            if (strlen($changed_profile['last_name']) > 75) {
-                $errors['last_name'] = "Achternaam te lang, maximaal 75 tekens.";
-            }
-            // check if email is in a valid emailadress format
-            if (!filter_var($changed_profile['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = "Voer een geldig emailadres in";
-            }
-            // street names can be a maximum of 75 characters
-            // to help user trim whitespace from beginning and end, and capitalize first letter
-            $changed_profile['street'] = trim($changed_profile['street']);
-            if (strlen($changed_profile['street']) > 75) {
-                $errors['street'] = "Straatnaam te lang, maximaal 75 tekens.";
-            }
-            // house numbers can be a maximum of 7 characters
-            // and must start with, and include, a number
-            // to help the user trim whitespaces from the beginning and end
-            $pattern_has_number = "/[0-9]/";
-            $pattern_begin_with_number = "/^[0-9]/";
-
-            $changed_profile['house_number'] = trim($changed_profile['house_number']);
-            if (strlen($changed_profile['house_number']) > 7) {
-                $errors['house_number'] = "Huisnummer te lang, maximaal 7 tekens.";
-            }
-            if (!preg_match($pattern_has_number, $changed_profile['house_number'])) {
-                $errors['house_number'] = "Huisnummer moet tenminste één nummer bevatten.";
-            }
-            if (!preg_match($pattern_begin_with_number, $changed_profile['house_number'])) {
-                $errors['house_number'] = "Huisnummer moet beginnen met een nummer.";
-            }
-            // postal code must match pattern '1234AB'
-            // therefore it can be a maximum of 6 characters (implicitly enforced)
-            // to help user strip (white)spaces and make letters uppercase.
-            $pattern = "/^[0-9][0-9][0-9][0-9][a-z][a-z]$/i";
-            $changed_profile['postal_code'] = strtoupper(str_replace(' ', '', $changed_profile['postal_code']));
-            if (!preg_match($pattern, $changed_profile['postal_code'])) {
-                $errors['postal_code'] = "Voer een geldige postcode in. bijv. 1234AB";
-            }
-            // city names can be a maximum of 60 characters.
-            // to help user strip whitespaces from beginning and end
-            $changed_profile['city'] = trim($changed_profile['city']);
-            if (strlen($changed_profile['city']) > 75) {
-                $errors['city'] = "Woonplaats te lang, maximaal 60 tekens.";
-            }
-
+            //validate user input
+            $validation = validateProfile($changed_profile, $errors);
+            $changed_profile = $validation['validated_data'];
+            $errors = $validation['errors'];
             // if there are no errors, post data to database
             if (empty($errors)) {
                 // check if there was a profile found on initial page load
@@ -156,9 +88,6 @@ if (isset($_POST['submit'])) {
                     $_SESSION['LoggedInUser']['profile_id'] = $profile_id;
                     $user['profile_id'] = $_SESSION['LoggedInUser']['profile_id'];
 
-                    //redirect client back to profile page now with the changes they made
-                    header('Location ../profile.php');
-
                 } else {
                     // there's an existing profile to update
                     $query =
@@ -182,17 +111,13 @@ if (isset($_POST['submit'])) {
                         or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
                     }
 
-                    //redirect client back to profile page now with the changes they made
-                    header('Location ../profile.php');
                 }
-
+                //redirect client back to profile page now with the changes they made
+                header('Location: ../profile.php');
             }
-
-
         } else {
             $errors['pwverification'] = "Dit wachtwoord is niet bij ons bekend.";
         }
-
     } else {
         $errors['pwverification'] = "Voer uw wachtwoord ter verificatie.";
     }
@@ -291,7 +216,7 @@ if (isset($_POST['submit'])) {
                 <input type="password" name="pwverification" id="pwverification" required>
                 <span class="errors"><?= $errors['pwverification'] ?? '' ?></span>
             </div>
-            <input type="submit" name="submit" id="submit" value="Registreren">
+            <input type="submit" name="submit" id="submit" value="Verzenden">
         </div>
     </div>
 </form>
