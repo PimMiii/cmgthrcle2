@@ -1,5 +1,18 @@
 <?php
 
+session_start();
+require_once 'includes/getallproducts.php';
+require_once 'includes/database.php';
+/** @var mysqli $db */
+
+if (isset($_SESSION['LoggedInUser'])) {
+    $user ['role'] = $_SESSION['LoggedInUser']['role'];
+} else {
+    $user['role'] = 0;
+}
+//retrieve all products from the database
+$products = getAllProducts($db, 'products', $user['role'])
+
 ?>
 
 <!doctype html>
@@ -18,9 +31,28 @@
     <div><a href="contact.php">Contact</a></div>
 </nav>
 <div class="main">
+    <h1>Alle Producten</h1>
 
-<h1>Alle Prodcuten</h1>
+    <?php foreach ($products as $product) { ?>
+        <div class="product">
+            <div class="thumbnail">
+                <?php // insert thumbnail here ?>
+            </div>
+            <div class="productname">
+                <h2><?= $product['name'] ?></h2>
+            </div>
+            <div class="productdescription">
+                <p><?= substr($product['description'], 0, 250)?>...<a href="product.php?productid=<?= $product['id']?>"> meer weergeven></a></p>
 
+            </div>
+            <div class="price">
+                <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
+            </div>
+            <div class="addtocart">
+                <?php // add to cart link here ?>
+            </div>
+        </div>
+    <?php }; ?>
 
 </div>
 </body>

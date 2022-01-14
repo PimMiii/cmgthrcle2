@@ -1,5 +1,9 @@
 <?php
 session_start();
+require_once 'includes/database.php';
+/** @var mysqli $db */
+require_once 'includes/getallproducts.php';
+
 
 if(isset($_SESSION['LoggedInUser'])){
     //check if user has admin role
@@ -7,6 +11,9 @@ if(isset($_SESSION['LoggedInUser'])){
         // redirect client to Homepage
         header('Location: index.php');
     }
+    $user[ 'role'] = $_SESSION['LoggedInUser']['role'];
+    //retrieve all products from the database
+    $products = getAllProducts($db, 'admin', $user['role']);
 }
 
 ?>
@@ -31,6 +38,25 @@ if(isset($_SESSION['LoggedInUser'])){
 
 <p>Welkom admin</p>
 
+    <?php foreach ($products as $product) { ?>
+        <div class="product">
+            <div class="thumbnail">
+                <?php // insert thumbnail here ?>
+            </div>
+            <div class="productname">
+                <h2><?= $product['name'] ?></h2>
+            </div>
+            <div class="productdescription">
+                <p><?= $product['description'] ?></p>
+            </div>
+            <div class="price">
+                <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
+            </div>
+            <div class="addtocart">
+                <?php // add to cart link here ?>
+            </div>
+        </div>
+    <?php }; ?>
 </div>
 </body>
 </html>

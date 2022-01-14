@@ -29,14 +29,15 @@ nav {
 }
 
 a {
-    color: #FFFFFF;
+    color: #545454;
 }
 
 a:hover {
-    color: rgb(12, 116, 137);
+    color: #BFDFFF;
 }
 
 nav a {
+    color: #FFFFFF;
     text-decoration: none;
 }
 
@@ -59,6 +60,12 @@ nav div {
     margin: auto;
     padding: 10px;
 
+}
+div .product {
+    border-radius: 5px;
+    box-shadow: 0px 5px 4px #00000025;
+    padding: 5vh 5vw;
+    margin: 5vh 5vw;
 }
 
 .errors {
