@@ -55,8 +55,9 @@ nav div img {
     border-radius: 5px;
     height: 38px;
 }
-.logo {
-    width: 158.02px;
+.logo img{
+    height: 32px;
+    width:auto;
 
 
 }
