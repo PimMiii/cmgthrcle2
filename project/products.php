@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once 'includes/getallproducts.php';
+require_once 'includes/products.php';
 require_once 'includes/database.php';
 /** @var mysqli $db */
 
@@ -31,7 +31,6 @@ $products = getAllProducts($db, 'products', $user['role'])
     <div><a href="contact.php">Contact</a></div>
 </nav>
 <div class="main">
-    <h1>Alle Producten</h1>
 
     <?php foreach ($products as $product) { ?>
         <div class="product">
@@ -42,14 +41,18 @@ $products = getAllProducts($db, 'products', $user['role'])
                 <h2><?= $product['name'] ?></h2>
             </div>
             <div class="productdescription">
-                <p><?= substr($product['description'], 0, 250)?>...<a href="product.php?productid=<?= $product['id']?>"> meer weergeven></a></p>
+                <p><?= substr($product['description'], 0, 250) ?>... <a
+                            href="product.php?productid=<?= $product['id'] ?>"><small>meer weergeven&#155;</small></a>
+                </p>
 
             </div>
-            <div class="price">
-                <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
-            </div>
-            <div class="addtocart">
-                <?php // add to cart link here ?>
+            <div class="productactions">
+                <div class="addtocart">
+                    <a href=""><img src="images/cartAdd.svg" alt="plaats product in winkelwagen" class="addtocart"></a>
+                </div>
+                <div class="price">
+                    <h3><?= '€' . number_format($product['price'], 2, ",") ?></h3>
+                </div>
             </div>
         </div>
     <?php }; ?>

@@ -22,10 +22,8 @@ nav {
     top: 0;
     background-color: #545454;
     font-family: sans-serif;
-    display: flex;
-    justify-content: space-around;
-
-
+    display: inline-flex;
+    justify-content: space-evenly;
 }
 
 a {
@@ -43,29 +41,82 @@ nav a {
 
 
 nav div {
-    padding: 8px;
-    margin: auto
+    margin-inline: 1px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 1px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 5px 4px #00000025;
 
+}
+
+nav div img {
+    border-radius: 5px;
+    height: 38px;
 }
 .logo {
     width: 158.02px;
-    height: 38px;
-    border-radius: 5px;
+
 
 }
 
 .main {
     background-color: #FFFFFF;
     width: 75vw;
-    margin: auto;
+    margin-inline: auto;
+    margin-top: 65px;
     padding: 10px;
+}
 
+.addtocart {
+     width: 32px;
+     height: 32px;
+     border-radius: 5px;
+     box-shadow: 0px 5px 4px #00000025;
+     background-color: #62C370;
+}
+
+.main .allproducts {
+     display: block;
+
+     margin-inline: 1vw;
+     margin-top: 1px;
+     margin-bottom: 1px;
+     border-bottom: 1px solid #545454;
+     direction: rtl;
+
+ }
+.main .allproducts h6 {
+    margin: 10px;
+    white-space: nowrap;
+}
+.main .productactions{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.main .productactions div{
+    margin-inline: 5px;
 }
 div .product {
     border-radius: 5px;
     box-shadow: 0px 5px 4px #00000025;
-    padding: 5vh 5vw;
-    margin: 5vh 5vw;
+    padding: 1vh 1vw;
+    margin: 1vh 1vw;
+}
+
+.productdescription a {
+    white-space: nowrap;
+}
+
+.adminoptions {
+    display: flex;
+    margin: 5px;
+    justify-content: flex-end;
+}
+
+.adminoptions div {
+    margin-inline: 5px;
 }
 
 .errors {

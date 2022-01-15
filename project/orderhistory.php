@@ -19,7 +19,6 @@ require_once 'includes/database.php';
     <div><a href="profile.php">Profile</a></div>
 </nav>
 <h1>Order History</h1>
-<body>
 <div class="main">
 <table>
     <thead>
@@ -40,17 +39,7 @@ require_once 'includes/database.php';
     </tr>
     </tfoot>
     <tbody>
-    <?php foreach ( as ) { ?>
-        <tr>
-            <td class="image"><img src="images" alt=""/></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a href="detail.php">Details</a></td>
-        </tr>
-    <?php } ?>
+
     </tbody>
 </table>
 

@@ -2,7 +2,7 @@
 session_start();
 require_once 'includes/database.php';
 /** @var mysqli $db */
-require_once 'includes/getallproducts.php';
+require_once 'includes/products.php';
 
 
 if(isset($_SESSION['LoggedInUser'])){
@@ -38,6 +38,7 @@ if(isset($_SESSION['LoggedInUser'])){
 
 <p>Welkom admin</p>
 
+
     <?php foreach ($products as $product) { ?>
         <div class="product">
             <div class="thumbnail">
@@ -47,15 +48,25 @@ if(isset($_SESSION['LoggedInUser'])){
                 <h2><?= $product['name'] ?></h2>
             </div>
             <div class="productdescription">
-                <p><?= $product['description'] ?></p>
+                <p><?= substr($product['description'], 0, 250)?>... <a href="product.php?productid=<?= $product['id']?>"><small>meer weergeven&#155;</small></a></p>
+
             </div>
             <div class="price">
                 <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
             </div>
-            <div class="addtocart">
-                <?php // add to cart link here ?>
+            <div class="adminoptions">
+                <div class="productedit">
+                <a href=""><img src="images/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
+                </div>
+                <div class="productvisibility">
+                    <a href=""><img src="images/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
+                </div>
+                <div class="productdelete">
+                    <a href=""><img src="images/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
+                </div>
             </div>
-        </div>
+            </div>
+
     <?php }; ?>
 </div>
 </body>

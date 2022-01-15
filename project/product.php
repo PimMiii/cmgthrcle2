@@ -3,6 +3,11 @@ session_start();
 require_once 'includes/products.php';
 require_once 'includes/database.php';
 /** @var mysqli $db */
+if (isset($_GET['productid'])) {
+    $id = htmlentities(mysqli_escape_string($db, $_GET['productid']));
+} else {
+    $errors['product'] = "Sorry, er is iets fout gegaan. Dit product kan niet worden gevonden.";
+}
 
 if (isset($_SESSION['LoggedInUser'])) {
     $user ['role'] = $_SESSION['LoggedInUser']['role'];
@@ -10,7 +15,20 @@ if (isset($_SESSION['LoggedInUser'])) {
     $user['role'] = 0;
 }
 //retrieve all products from the database
-$products = getAllProducts($db, 'index', $user['role'])
+$products = getProduct($db, $id, $user['role']);
+$errors = $products['errors'];
+if (empty($errors)) {
+    $product = $products['product'];
+    $class = 'productname';
+}
+else {
+    $product = array(
+            'name' => $errors['product'],
+        'description' => '',
+        'price' => 0.0000
+    );
+    $class = 'errors';
+}
 ?>
 
 
@@ -34,23 +52,17 @@ $products = getAllProducts($db, 'index', $user['role'])
 
 </nav>
 <div class="main">
-    <div class="quickactions">
-        <div class="allproducts">
-            <h6><a href="products.php">&#139;Alle Producten</a></h6>
-        </div>
-    </div>
-    <?php foreach ($products as $product) { ?>
+    <div class="allproducts"><h6><a href="products.php">&#139;Alle Producten</a></h6></div>
+    <?php { ?>
         <div class="product">
             <div class="thumbnail">
                 <?php // insert thumbnail here ?>
             </div>
-            <div class="productname">
+            <div class="<?= $class ?>">
                 <h2><?= $product['name'] ?></h2>
             </div>
             <div class="productdescription">
-                <p><?= substr($product['description'], 0, 250) ?>... <a
-                            href="product.php?productid=<?= $product['id'] ?>"><small>meer weergeven&#155;</small></a>
-                </p>
+                <p><?= $product['description'] ?></p>
 
             </div>
             <div class="productactions">
@@ -60,6 +72,7 @@ $products = getAllProducts($db, 'index', $user['role'])
                 <div class="price">
                     <h3><?= '€' . number_format($product['price'], 2, ",") ?></h3>
                 </div>
+
             </div>
         </div>
     <?php }; ?>
