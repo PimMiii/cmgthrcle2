@@ -23,7 +23,21 @@ nav {
     background-color: #545454;
     font-family: sans-serif;
     display: inline-flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+}
+nav .navcontent {
+
+    width: 75vw;
+    margin-inline: auto;
+    box-shadow: unset;
+    background-color: unset;
+    display: flex;
+}
+nav .search {
+    width: 80%;
+    box-shadow: unset;
+    background-color: unset;
+
 }
 
 a {
@@ -41,23 +55,31 @@ nav a {
 
 
 nav div {
-    margin-inline: 1px;
+    margin-inline: 5px;
     margin-top: auto;
     margin-bottom: auto;
-    padding: 1px;
+    padding-top: 2px;
+    padding-inline: 2px;
     border-radius: 5px;
     background-color: #FFFFFF;
     box-shadow: 0px 5px 4px #00000025;
 
 }
 
-nav div img {
-    border-radius: 5px;
-    height: 38px;
+nav .navright {
+    box-shadow: unset;
+    background-color: unset;
+    display: flex;
 }
 
-.logo img {
-    height: 32px;
+nav div img {
+    margin: auto;
+    border-radius: 5px;
+    height: 28px;
+    width: 28px;
+}
+
+nav .logo {
     width: auto;
 
 
@@ -72,8 +94,8 @@ nav div img {
 }
 
 .main .productactions img{
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     padding: 2px;
     border-radius: 5px;
     box-shadow: 0px 5px 4px #00000025;

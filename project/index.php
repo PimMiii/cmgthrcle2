@@ -26,12 +26,14 @@ $products = getAllProducts($db, 'index', $user['role'])
 </head>
 <body>
 <nav>
-
-    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepagina" class="logo"></a></div>
-    <div><a href="login.php"><img src="images/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
-    <div><a href="cart.php"><img src="images/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
-
-
+    <div class="navcontent">
+        <div><a href="index.php"><img src="images/logo.bmp" alt="Homepagina" class="logo"></a></div>
+        <div class="search"></div>
+        <div class="navright">
+            <div><a href="login.php"><img src="images/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
+            <div><a href="cart.php"><img src="images/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+        </div>
+    </div>
 </nav>
 <div class="main">
     <div class="quickactions">
