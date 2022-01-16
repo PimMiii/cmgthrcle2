@@ -19,7 +19,6 @@ $products = getProduct($db, $id, $user['role']);
 $errors = $products['errors'];
 if (empty($errors)) {
     $product = $products['product'];
-    $class = 'productname';
 }
 else {
     $product = array(
@@ -58,7 +57,7 @@ else {
             <div class="thumbnail">
                 <?php // insert thumbnail here ?>
             </div>
-            <div class="<?= $class ?>">
+            <div class="<?= $class ?? "productname" ?>">
                 <h2><?= $product['name'] ?></h2>
             </div>
             <div class="productdescription">
@@ -66,7 +65,7 @@ else {
 
             </div>
             <div class="productactions">
-                <div class="addtocart">
+                <div class="<?= $class ?? "addtocart"?>">
                     <a href=""><img src="images/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
                 </div>
                 <div class="price">

@@ -7,15 +7,17 @@ require_once 'includes/products.php';
 
 if(isset($_SESSION['LoggedInUser'])){
     //check if user has admin role
-    if($_SESSION['LoggedInUser']['role']!=1){
-        // redirect client to Homepage
-        header('Location: index.php');
+    if($_SESSION['LoggedInUser']['role']=1){
     }
     $user[ 'role'] = $_SESSION['LoggedInUser']['role'];
     //retrieve all products from the database
     $products = getAllProducts($db, 'admin', $user['role']);
-}
 
+    }
+
+    else {
+        header('Location: index.php');
+    }
 ?>
 
 <!doctype html>
@@ -30,11 +32,25 @@ if(isset($_SESSION['LoggedInUser'])){
 </head>
 <body>
 <nav>
-    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepage" class="logo"></a></div>
-    <div><a href="logout.php">Uitloggen</a></div>
+
+    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepagina" class="logo"></a></div>
+    <div><a href="login.php"><img src="images/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
+    <div><a href="cart.php"><img src="images/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+
+
 </nav>
 <div class="main">
-<h1>Adminportaal</h1>
+    <div class="quickactions">
+        <div class="logout">
+            <h6><a href="logout.php">Uitloggen</a></h6>
+        </div>
+        <div class="addproduct">
+            <h6><a href="admin/add.php">Product toevoegen</a></h6>
+        </div>
+        <div class="activeorders">
+            <h6><a href="admin/orders.php">Openstaande bestellingen</a></h6>
+        </div>
+    </div>
 
 <p>Welkom admin</p>
 
@@ -51,19 +67,22 @@ if(isset($_SESSION['LoggedInUser'])){
                 <p><?= substr($product['description'], 0, 250)?>... <a href="product.php?productid=<?= $product['id']?>"><small>meer weergeven&#155;</small></a></p>
 
             </div>
-            <div class="price">
-                <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
-            </div>
-            <div class="adminoptions">
-                <div class="productedit">
-                <a href=""><img src="images/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
+
+            <div class="productactions">
+                <div class="productdelete">
+                    <a href="admin/delete.php"><img src="images/delete.svg" alt="Product verwijderen"></a>
                 </div>
                 <div class="productvisibility">
-                    <a href=""><img src="images/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
+                    <a href="admin/visibility.php?productid=<?= $product['id'] ?>"><img src="images/visibility<?=$product['visible']?>.svg" alt="Product zichtbaarheid aanpassen"></a>
                 </div>
-                <div class="productdelete">
-                    <a href=""><img src="images/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
+                <div class="productedit">
+                <a href="admin/edit.php"><img src="images/edit.svg" alt="Product aanpassen"></a>
                 </div>
+                <div class="price">
+                    <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
+                </div>
+
+
             </div>
             </div>
 

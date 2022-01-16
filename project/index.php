@@ -38,6 +38,9 @@ $products = getAllProducts($db, 'index', $user['role'])
         <div class="allproducts">
             <h6><a href="products.php">&#139;Alle Producten</a></h6>
         </div>
+        <div class="contact">
+            <h6><a href="contact.php">Contact</a></h6>
+        </div>
     </div>
     <?php foreach ($products as $product) { ?>
         <div class="product">
@@ -63,7 +66,7 @@ $products = getAllProducts($db, 'index', $user['role'])
             </div>
         </div>
     <?php }; ?>
-    <div><h6><a href="contact.php">Contact</a></h6></div>
+
 </div>
 </body>
 </html>

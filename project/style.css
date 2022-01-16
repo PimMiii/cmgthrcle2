@@ -31,7 +31,7 @@ a {
 }
 
 a:hover {
-    color: #BFDFFF;
+    color: #007FFF;
 }
 
 nav a {
@@ -55,9 +55,10 @@ nav div img {
     border-radius: 5px;
     height: 38px;
 }
-.logo img{
+
+.logo img {
     height: 32px;
-    width:auto;
+    width: auto;
 
 
 }
@@ -70,40 +71,71 @@ nav div img {
     padding: 10px;
 }
 
-.addtocart {
-     width: 32px;
-     height: 32px;
-     border-radius: 5px;
-     box-shadow: 0px 5px 4px #00000025;
-     background-color: #62C370;
+.main .productactions img{
+    width: 32px;
+    height: 32px;
+    padding: 2px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 4px #00000025;
+    background-color: #62C370;
 }
 
-.main .allproducts {
-     display: block;
+.main .productactions .productdelete img{
+    background-color: #FF5A5F;
+}
 
-     margin-inline: 1vw;
-     margin-top: 1px;
-     margin-bottom: 1px;
-     border-bottom: 1px solid #545454;
-     direction: rtl;
+.main .productactions .productvisibility img{
+    background-color: #BFDFFF;
+}
 
- }
-.main .allproducts h6 {
+.main .quickactions {
+    display: flex;
+    margin-inline: 1vw;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    border-bottom: 1px solid #545454;
+    direction: rtl;
+}
+
+.main .quickactions .logout a:hover {
+    color: #FF5A5F;
+}
+
+.main .quickactions .addproduct a:hover {
+    color: #62C370;
+}
+
+.main .quickactions h6 {
     margin: 10px;
     white-space: nowrap;
 }
-.main .productactions{
+
+.main .productactions {
     display: flex;
     flex-direction: row-reverse;
 }
-.main .productactions div{
+
+.main .productactions div {
     margin-inline: 5px;
 }
+
 div .product {
     border-radius: 5px;
     box-shadow: 0px 5px 4px #00000025;
     padding: 1vh 1vw;
     margin: 1vh 1vw;
+}
+
+.userprofile {
+    border-radius: 5px;
+    box-shadow: 0px 5px 4px #00000025;
+    padding: 1vh 1vw;
+    margin: 1vh 1vw;
+
+}
+
+.userprofile table {
+    margin-inline: auto;
 }
 
 .productdescription a {
@@ -124,6 +156,10 @@ div .product {
     color: #FF5A5F;
     font-size: 80%;
 }
+.productactions .errors img {
+    background-color: #FF5A5F;
+}
+
 form {
     border-radius: 5px;
     box-shadow: 0px 5px 4px #00000025;
@@ -144,9 +180,11 @@ h1 {
 
 
 }
+
 h2 {
     margin-top: 4px;
 }
+
 h3 {
     margin-top: 2px;
     font-size: 1.05em;
@@ -162,7 +200,6 @@ section {
     font-size: 1.1em;
     max-width: 800px;
 }
-
 
 
 .imagegallery {

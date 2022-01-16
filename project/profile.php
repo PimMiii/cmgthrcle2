@@ -39,17 +39,28 @@ else {
 </head>
 <body>
 <nav>
-    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepage" class="logo"></a></div>
-    <div><a href="logout.php">Uitloggen</a></div>
-    <div><a href="profile/edit.php">Profiel aanpassen</a></div>
 
-    <div><a href="products.php">Producten</a></div>
-    <div><a href="orderhistory.php">Order history</a></div>
+    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepagina" class="logo"></a></div>
+    <div><a href="login.php"><img src="images/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
+    <div><a href="cart.php"><img src="images/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+
+
 </nav>
 <div class="main">
+    <div class="quickactions">
 
-<h1>Mijn Profiel</h1>
-<div>
+        <div class="logout">
+            <h6><a href="logout.php">Uitloggen</a></h6>
+        </div>
+        <div class="editprofile">
+            <h6><a href="profile/edit.php">Profiel aanpassen</a></h6>
+        </div>
+        <div class="history">
+            <h6><a href="orderhistory.php">Bestellingsgeschiedenis</a></h6>
+        </div>
+
+    </div>
+<div class="userprofile">
     <table style="width: 100%">
         <tbody>
         <tr>

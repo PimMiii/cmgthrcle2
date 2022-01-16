@@ -79,11 +79,23 @@ if(isset($_POST['submit'])) {
 </head>
 <body>
 <nav>
-    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepage" class="logo"></a></div>
+
+    <div><a href="index.php"><img src="images/logo.bmp" alt="Homepagina" class="logo"></a></div>
+    <div><a href="login.php"><img src="images/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
+    <div><a href="cart.php"><img src="images/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+
+
 </nav>
 <div class="main">
-<h1>Login</h1>
+    <div class="quickactions">
+        <div class="register">
+            <h6><a href="register.php.php">Registreren</a></h6>
+        </div>
+    </div>
 <form action="" method="post">
+    <div class="title">
+        <h2>Inloggen</h2>
+    </div>
     <div>
         <label for="email">E-Mail:</label>
         <input type="text" name="email" id="email" required>
@@ -97,7 +109,6 @@ if(isset($_POST['submit'])) {
         <input type="submit" name="submit" id="login" value="Login"
 
     </div>
-    <div><a href="register.php">Register</a></div>
 </form>
 
 </div>
