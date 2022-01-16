@@ -119,6 +119,15 @@ nav div img {
     margin-inline: 5px;
 }
 
+.main .title {
+    margin: 5px;
+}
+.main .title h2{
+    text-align: center;
+}
+
+
+
 div .product {
     border-radius: 5px;
     box-shadow: 0px 5px 4px #00000025;

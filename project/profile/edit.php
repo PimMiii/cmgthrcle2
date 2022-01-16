@@ -2,7 +2,7 @@
 session_start();
 
 require_once '../includes/database.php';
-require_once '../includes/profilevalidation.php';
+require_once '../includes/validation.php';
 /** @var mysqli $db */
 
 $errors = [];
@@ -76,7 +76,7 @@ if (isset($_POST['submit'])) {
                     $profile_id = mysqli_insert_id($db);
                     // update user in db
                     if (isset($_POST['make_login'])) {
-                        $query = "UPDATE `users` SET `profile_id` = '$profile_id', `email` = '". $changed_profile['email'] ."' WHERE `id` = '$id';";
+                        $query = "UPDATE `users` SET `profile_id` = '$profile_id', `email` = '" . $changed_profile['email'] . "' WHERE `id` = '$id';";
                     } else {
                         $query = "UPDATE `users` SET `profile_id` = '$profile_id' WHERE `id` = '$id';";
                     }
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
                        `postal_code` = '" . $changed_profile['postal_code'] . "',
                        `city` = '" . $changed_profile['city'] . "',
                        `email` = '" . $changed_profile['email'] . "' 
-                       WHERE `id` = '". $_SESSION['LoggedInUser']['profile_id'] ."';";
+                       WHERE `id` = '" . $_SESSION['LoggedInUser']['profile_id'] . "';";
                     // update profile
                     $result = mysqli_query($db, $query)
                     or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
@@ -146,90 +146,106 @@ if (isset($_POST['submit'])) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mijn Profiel</title>
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../style.css"/>
 </head>
 <body>
 <nav>
-    <div><a href="../index.php"><img src="../images/logo.bmp" alt="Homepage" class="logo"></a></div>
-    <div><a href="../products.php">Producten</a></div>
-    <div><a href="../logout.php">Uitloggen</a></div>
-    <div><a href="../orderhistory.php">Order history</a></div>
+
+    <div><a href="../index.php"><img src="../images/logo.bmp" alt="Homepagina" class="logo"></a></div>
+    <div><a href="../login.php"><img src="../images/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
+    <div><a href="../cart.php"><img src="../images/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+
+
 </nav>
 <div class="main">
-<h1>Profiel Aanpassen</h1>
+    <div class="quickactions">
+        <div class="logout">
+            <h6><a href="logout.php">Uitloggen</a></h6>
+        </div>
+        <div class="editprofile">
+            <h6><a href="../profile.php">Profiel</a></h6>
+        </div>
+        <div class="history">
+            <h6><a href="orderhistory.php">Bestellingsgeschiedenis</a></h6>
+        </div>
+    </div>
+        <div>
+            <form action="" method="post">
+                <div>
 
-<form action="" method="post">
-    <div>
-        <h2>Naamgegevens</h2>
-        <div>
-            <label for="first_name">Voornaam: </label>
-            <input type="text" name="first_name" id="first_name"
-                   value="<?= $changed_profile['first_name'] ?? $user['profile']['first_name'] ?? '' ?>" required>
-            <span class="errors"><?= $errors['first_name'] ?? '' ?></span>
-        </div>
-        <div>
-            <label for="last_name">Achternaam: </label>
-            <input type="text" name="last_name" id="last_name"
-                   value="<?= $changed_profile['last_name'] ?? $user['profile']['last_name'] ?? '' ?>" required>
-            <span class="errors"><?= $errors['last_name'] ?? '' ?></span>
-        </div>
-    </div>
-    <div>
-        <h2>E-mailgegevens</h2>
-        <div>
-            <label for="email">E-mail adres: </label>
-            <input type="email" name="email" id="email"
-                   value="<?= $changed_profile['email'] ?? $user['profile']['email'] ?? $user['email'] ?? '' ?>"
-                   required>
-            <span class="errors"><?= $errors['email'] ?? '' ?></span>
-        </div>
-        <div>
-            <input type="checkbox" id="make_login" name="make_login">
-            <label for="make_login">Maak dit het emailadres waar ik mee inlog</label>
-        </div>
-    </div>
-    <div>
-        <h2>Adresgegevens</h2>
-        <div>
-            <label for="street">Straat: </label>
-            <input type="text" name="street" id="street"
-                   value="<?= $changed_profile['street'] ?? $user['profile']['street'] ?? '' ?>" required>
-            <span class="errors"><?= $errors['street'] ?? '' ?></span>
-        </div>
-        <div>
-            <label for="house_number">Huisnummer: </label>
-            <input type="text" name="house_number" id="house_number"
-                   value="<?= $changed_profile['house_number'] ?? $user['profile']['house_number'] ?? '' ?>" required>
-            <span class="errors"><?= $errors['house_number'] ?? '' ?></span>
-        </div>
-        <div>
-            <label for="postal_code">Postcode: </label>
-            <input type="text" name="postal_code" id="postal_code"
-                   value="<?= $changed_profile['postal_code'] ?? $user['profile']['postal_code'] ?? '' ?>"
-                   required>
-            <span class="errors"><?= $errors['postal_code'] ?? '' ?></span>
-        </div>
-        <div>
-            <label for="city">Woonplaats: </label>
-            <input type="text" name="city" id="city"
-                   value="<?= $changed_profile['city'] ?? $user['profile']['city'] ?? '' ?>" required>
-            <span class="errors"><?= $errors['city'] ?? '' ?></span>
-        </div>
-    </div>
-    <div>
-        <div>
-            <h2> Verificatie</h2>
-            <div>
-                <label for="pwverification">Voer uw wachtwoord in: </label>
-                <input type="password" name="pwverification" id="pwverification" required>
-                <span class="errors"><?= $errors['pwverification'] ?? '' ?></span>
-            </div>
-            <input type="submit" name="submit" id="submit" value="Verzenden">
-        </div>
-    </div>
-</form>
+                    <h2>Naamgegevens</h2>
+                    <div>
+                        <label for="first_name">Voornaam: </label>
+                        <input type="text" name="first_name" id="first_name"
+                               value="<?= $changed_profile['first_name'] ?? $user['profile']['first_name'] ?? '' ?>"
+                               required>
+                        <span class="errors"><?= $errors['first_name'] ?? '' ?></span>
+                    </div>
+                    <div>
+                        <label for="last_name">Achternaam: </label>
+                        <input type="text" name="last_name" id="last_name"
+                               value="<?= $changed_profile['last_name'] ?? $user['profile']['last_name'] ?? '' ?>"
+                               required>
+                        <span class="errors"><?= $errors['last_name'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div>
+                    <h2>E-mailgegevens</h2>
+                    <div>
+                        <label for="email">E-mail adres: </label>
+                        <input type="email" name="email" id="email"
+                               value="<?= $changed_profile['email'] ?? $user['profile']['email'] ?? $user['email'] ?? '' ?>"
+                               required>
+                        <span class="errors"><?= $errors['email'] ?? '' ?></span>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="make_login" name="make_login">
+                        <label for="make_login">Maak dit het emailadres waar ik mee inlog</label>
+                    </div>
+                </div>
+                <div>
+                    <h2>Adresgegevens</h2>
+                    <div>
+                        <label for="street">Straat: </label>
+                        <input type="text" name="street" id="street"
+                               value="<?= $changed_profile['street'] ?? $user['profile']['street'] ?? '' ?>" required>
+                        <span class="errors"><?= $errors['street'] ?? '' ?></span>
+                    </div>
+                    <div>
+                        <label for="house_number">Huisnummer: </label>
+                        <input type="text" name="house_number" id="house_number"
+                               value="<?= $changed_profile['house_number'] ?? $user['profile']['house_number'] ?? '' ?>"
+                               required>
+                        <span class="errors"><?= $errors['house_number'] ?? '' ?></span>
+                    </div>
+                    <div>
+                        <label for="postal_code">Postcode: </label>
+                        <input type="text" name="postal_code" id="postal_code"
+                               value="<?= $changed_profile['postal_code'] ?? $user['profile']['postal_code'] ?? '' ?>"
+                               required>
+                        <span class="errors"><?= $errors['postal_code'] ?? '' ?></span>
+                    </div>
+                    <div>
+                        <label for="city">Woonplaats: </label>
+                        <input type="text" name="city" id="city"
+                               value="<?= $changed_profile['city'] ?? $user['profile']['city'] ?? '' ?>" required>
+                        <span class="errors"><?= $errors['city'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <h2> Verificatie</h2>
+                        <div>
+                            <label for="pwverification">Voer uw wachtwoord in: </label>
+                            <input type="password" name="pwverification" id="pwverification" required>
+                            <span class="errors"><?= $errors['pwverification'] ?? '' ?></span>
+                        </div>
+                        <input type="submit" name="submit" id="submit" value="Verzenden">
+                    </div>
+                </div>
 
-
-</div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

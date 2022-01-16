@@ -6,4 +6,4 @@ session_unset();
 session_destroy();
 
 // redirect client to the homepage
-header('Location: index.php');
+header('Location: ../index.php');

@@ -42,7 +42,7 @@ if(isset($_SESSION['LoggedInUser'])){
 <div class="main">
     <div class="quickactions">
         <div class="logout">
-            <h6><a href="logout.php">Uitloggen</a></h6>
+            <h6><a href="profile/logout.php">Uitloggen</a></h6>
         </div>
         <div class="addproduct">
             <h6><a href="admin/add.php">Product toevoegen</a></h6>
