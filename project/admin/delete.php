@@ -1,7 +1,41 @@
 <?php
-// delete a product
+session_start();
 
+require_once '../includes/database.php';
+require_once '../includes/products.php';
+require_once '../includes/validation.php';
+/** @var mysqli $db */
+
+$errors = [];
+// check if client is logged in as user
+if (isset($_SESSION['LoggedInUser'])) {
+    //check if loggen in user is admin
+    $user_role = $_SESSION['LoggedInUser']['role'];
+    if ($user_role == 1){
+        if (isset($_GET['productid'])){
+            $id = htmlentities(mysqli_escape_string($db, $_GET['productid']));
+            $product_data = getProduct($db, $id, $user_role);
+            $product = $product_data['product'];
+            $errors = $product_data['errors'];
+            if(isset($_GET['confirmation'])){
+                $confirmation = htmlentities(mysqli_escape_string($db, $_GET['confirmation']));
+                if($confirmation === $id){
+                    $query = "DELETE FROM `products` WHERE `id`='$confirmation';";
+                    $result = mysqli_query($db, $query)
+                    or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+
+                    header('Location: ../admin.php');
+                }
+            }
+
+
+
+
+        }else{header('Location: ../admin.php');}
+    }else{header('Location: ../index.php');}
+} else {header('Location: ../index.php');}
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,13 +62,37 @@
         <div class="logout">
             <h6><a href="../profile/logout.php">Uitloggen</a></h6>
         </div>
-        <div class="editprofile">
-            <h6><a href="../profile.php">Profiel</a></h6>
+        <div class="addproduct">
+            <h6><a href="add.php">Product toevoegen</a></h6>
         </div>
-        <div class="history">
-            <h6><a href=../profile/orderhistory.php">Bestellingsgeschiedenis</a></h6>
+        <div class="activeorders">
+            <h6><a href="orders.php">Openstaande bestellingen</a></h6>
         </div>
     </div>
+    <?php { ?>
+        <div class="product">
+            <div class="thumbnail">
+                <?php // insert thumbnail here ?>
+            </div>
+            <div class="<?= $class ?? "productname" ?>">
+                <h2><?= $product['name'] ?></h2>
+            </div>
+            <div class="productdescription">
+                <p><?= $product['description'] ?></p>
+
+            </div>
+
+            <div class="productactions">
+                <div class="confirmdeletion" >
+                    <a href="delete.php?confirmation=<?=$product['id']?>&productid=<?=$product['id']?>"><img src="../images/confirmdelete.svg" alt="Ja, Verwijder product."></a>
+                </div>
+                <div class="errors">
+                    <h3>Weet je zeker dat je dit product wilt verwijderen?!</h3>
+                </div>
+
+            </div>
+        </div>
+    <?php }; ?>
 </div>
 </body>
 </html>

@@ -242,7 +242,9 @@ if (isset($_POST['submit'])) {
                             <input type="password" name="pwverification" id="pwverification" required>
                             <span class="errors"><?= $errors['pwverification'] ?? '' ?></span>
                         </div>
+                        <div>
                         <input type="submit" name="submit" id="submit" value="Verzenden">
+                        </div>
                     </div>
                 </div>
 

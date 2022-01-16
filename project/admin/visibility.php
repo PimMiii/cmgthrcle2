@@ -23,7 +23,7 @@ if (isset($_GET['productid'])) {
                 $errors['class'] = 'errors';
             }
             // update visibility in db
-            if(empty($errors)) {
+            if (empty($errors)) {
                 $query = "UPDATE `products` SET `visible`='$toggle_visibility' WHERE `id` = '" . $product['id'] . "';";
                 $result = mysqli_query($db, $query)
                 or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
@@ -67,8 +67,21 @@ if (isset($_GET['productid'])) {
     </div>
 </nav>
 <div class="main">
+    <div class="quickactions">
+        <div class="logout">
+            <h6><a href="../profile/logout.php">Uitloggen</a></h6>
+        </div>
+        <div class="addproduct">
+            <h6><a href="add.php">Product toevoegen</a></h6>
+        </div>
+        <div class="activeorders">
+            <h6><a href="orders.php">Openstaande bestellingen</a></h6>
+        </div>
+    </div>
 
-    <div class="<?= $errors['class'] ?? ''?>><h2><?= $errors['id'] ?? '' ?></h2></div>
+    <div class="<?= $errors['class'] ?? '' ?>">
+        <h2><?= $errors['id'] ?? "Als je deze pagina ziet is er iets misgegaan!" ?></h2>
+    </div>
 
 </div>
 </body>

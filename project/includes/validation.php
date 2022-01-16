@@ -78,3 +78,44 @@ function validateProfile(array $data, array $errors) {
     // return array with data and errors
     return array('validated_data' => $data, 'errors' => $errors);
 }
+
+// function to validate product information provided by admin
+// returns an array with the validated data, and errors
+function validateProduct(array $data, array $errors) {
+    //check if fields are empty
+    if ($data['name'] == '') {
+        $errors['name'] = "Voer een productnaam in";
+    }
+    if ($data['description'] == '') {
+        $errors['description'] = "Voer een beschrijving in";
+    }
+    if ($data['price'] == '') {
+        $errors['price'] = "Voer de verkoopprijs in";
+    }
+
+    //validate the input
+
+    // product names can be a maximum of 75 characters.
+    // to help user trim whitespace from beginning and end, and capitalize first character.
+    $data['name'] = ucfirst(trim($data['name']));
+    if (strlen($data['name']) > 75) {
+        $errors['name'] = "Productnaam te lang, maximaal 75 tekens.";
+    }
+    // Description has an unlimited character limit
+    // to help user trim whitespace from beginning and end.
+    $data['description'] = ucfirst(trim($data['description']));
+
+    // price needs to be a number
+    // price cannot be negative
+    if (!is_numeric($data['price'])){
+        $errors['price'] = "Verkoopprijs is geen nummer.";
+    }
+    if ($data['price'] < 0) {
+        $errors['price'] = "Verkoopprijs kan niet negatief zijn.";
+    }
+
+    $data['visble'] = $data['visible'];
+
+    return array('validated_data' => $data, 'errors' => $errors);
+}
+

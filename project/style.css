@@ -190,6 +190,9 @@ div .product {
 .productactions .errors img {
     background-color: #FF5A5F;
 }
+.productactions .confirmdeletion img {
+    background-color: #FF5A5F;
+}
 
 form {
     border-radius: 5px;
@@ -218,6 +221,7 @@ h2 {
 
 h3 {
     margin-top: 2px;
+    margin-bottom: 2px;
     font-size: 1.05em;
 }
 

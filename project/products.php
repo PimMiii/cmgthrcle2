@@ -37,6 +37,11 @@ $products = getAllProducts($db, 'products', $user['role'])
     </div>
 </nav>
 <div class="main">
+    <div class="quickactions">
+        <div class="contact">
+            <h6><a href="contact.php">Contact</a></h6>
+        </div>
+    </div>
 
     <?php foreach ($products as $product) { ?>
         <div class="product">

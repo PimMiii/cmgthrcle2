@@ -5,19 +5,18 @@ require_once 'includes/database.php';
 require_once 'includes/products.php';
 
 
-if(isset($_SESSION['LoggedInUser'])){
+if(isset($_SESSION['LoggedInUser'])) {
     //check if user has admin role
-    if($_SESSION['LoggedInUser']['role']=1){
-    }
-    $user[ 'role'] = $_SESSION['LoggedInUser']['role'];
-    //retrieve all products from the database
-    $products = getAllProducts($db, 'admin', $user['role']);
+    if ($_SESSION['LoggedInUser']['role'] = 1) {
 
-    }
+        $user['role'] = $_SESSION['LoggedInUser']['role'];
+        //retrieve all products from the database
+        $products = getAllProducts($db, 'admin', $user['role']);
 
-    else {
+    } else {
         header('Location: index.php');
     }
+}
 ?>
 
 <!doctype html>
@@ -72,13 +71,13 @@ if(isset($_SESSION['LoggedInUser'])){
 
             <div class="productactions">
                 <div class="productdelete">
-                    <a href="admin/delete.php"><img src="images/delete.svg" alt="Product verwijderen"></a>
+                    <a href="admin/delete.php?productid=<?= $product['id'] ?>"><img src="images/delete.svg" alt="Product verwijderen"></a>
                 </div>
                 <div class="productvisibility">
                     <a href="admin/visibility.php?productid=<?= $product['id'] ?>"><img src="images/visibility<?=$product['visible']?>.svg" alt="Product zichtbaarheid aanpassen"></a>
                 </div>
                 <div class="productedit">
-                <a href="admin/edit.php"><img src="images/edit.svg" alt="Product aanpassen"></a>
+                <a href="admin/edit.php?productid=<?= $product['id'] ?>"><img src="images/edit.svg" alt="Product aanpassen"></a>
                 </div>
                 <div class="price">
                     <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
