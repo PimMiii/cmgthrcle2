@@ -5,7 +5,7 @@ require_once 'includes/database.php';
 require_once 'includes/products.php';
 
 
-if(isset($_SESSION['LoggedInUser'])) {
+if (isset($_SESSION['LoggedInUser'])) {
     //check if user has admin role
     if ($_SESSION['LoggedInUser']['role'] = 1) {
 
@@ -53,7 +53,7 @@ if(isset($_SESSION['LoggedInUser'])) {
         </div>
     </div>
 
-<p>Welkom admin</p>
+    <p>Welkom admin</p>
 
 
     <?php foreach ($products as $product) { ?>
@@ -65,27 +65,33 @@ if(isset($_SESSION['LoggedInUser'])) {
                 <h2><?= $product['name'] ?></h2>
             </div>
             <div class="productdescription">
-                <p><?= substr($product['description'], 0, 250)?>... <a href="product.php?productid=<?= $product['id']?>"><small>meer weergeven&#155;</small></a></p>
+                <p><?= substr($product['description'], 0, 250) ?>... <a
+                            href="product.php?productid=<?= $product['id'] ?>"><small>meer weergeven&#155;</small></a>
+                </p>
 
             </div>
 
             <div class="productactions">
                 <div class="productdelete">
-                    <a href="admin/delete.php?productid=<?= $product['id'] ?>"><img src="icons/delete.svg" alt="Product verwijderen"></a>
+                    <a href="admin/delete.php?productid=<?= $product['id'] ?>"><img src="icons/delete.svg"
+                                                                                    alt="Product verwijderen"></a>
                 </div>
                 <div class="productvisibility">
-                    <a href="admin/visibility.php?productid=<?= $product['id'] ?>"><img src="images/visibility<?=$product['visible']?>.svg" alt="Product zichtbaarheid aanpassen"></a>
+                    <a href="admin/visibility.php?productid=<?= $product['id'] ?>"><img
+                                src="icons/visibility<?= $product['visible'] ?>.svg"
+                                alt="Product zichtbaarheid aanpassen"></a>
                 </div>
                 <div class="productedit">
-                <a href="admin/edit.php?productid=<?= $product['id'] ?>"><img src="icons/edit.svg" alt="Product aanpassen"></a>
+                    <a href="admin/edit.php?productid=<?= $product['id'] ?>"><img src="icons/edit.svg"
+                                                                                  alt="Product aanpassen"></a>
                 </div>
                 <div class="price">
-                    <h3><?='€'.number_format($product['price'], 2, ",")?></h3>
+                    <h3><?= '€' . number_format($product['price'], 2, ",") ?></h3>
                 </div>
 
 
             </div>
-            </div>
+        </div>
 
     <?php }; ?>
 </div>

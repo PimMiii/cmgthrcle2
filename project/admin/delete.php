@@ -11,29 +11,56 @@ $errors = [];
 if (isset($_SESSION['LoggedInUser'])) {
     //check if loggen in user is admin
     $user_role = $_SESSION['LoggedInUser']['role'];
-    if ($user_role == 1){
-        if (isset($_GET['productid'])){
+    if ($user_role == 1) {
+        if (isset($_GET['productid'])) {
             $id = htmlentities(mysqli_escape_string($db, $_GET['productid']));
             $product_data = getProduct($db, $id, $user_role);
             $product = $product_data['product'];
             $errors = $product_data['errors'];
-            if(isset($_GET['confirmation'])){
-                $confirmation = htmlentities(mysqli_escape_string($db, $_GET['confirmation']));
-                if($confirmation === $id){
-                    $query = "DELETE FROM `products` WHERE `id`='$confirmation';";
-                    $result = mysqli_query($db, $query)
-                    or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
 
-                    header('Location: ../admin.php');
+            if (isset($_GET['confirmation'])) {
+                // retrieve the semi random string from the GET
+                $confirmation_get = mysqli_escape_string($db, $_GET['confirmation']);
+                // retrieve the control number and the confirmation string from the SEASSION
+                $confirmation = $_SESSION['DeleteConfirmation'];
+                // check if both strings match
+                if ($confirmation_get == $confirmation['confirmation_str']) {
+                    // validate the confirmation string using the control number and id
+                    $pattern = "/^" . ($id * $confirmation['control']) . "/";
+                    if (preg_match($pattern, $confirmation_get)) {
+                        $query = "DELETE FROM `products` WHERE `id`='$id';";
+                        $result = mysqli_query($db, $query)
+                        or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+
+                        unset($_SESSION['DeleteConfirmation']);
+                        header('Location: ../admin.php');
+                    } else {
+                        $errors['confirmation'] = "Er ging iets mis in de verificatie, probeer later opnieuw.";
+                    }
+
+                } else {
+                    $errors['confirmation'] = "Er ging iets mis in de verificatie, probeer later opnieuw.";
                 }
+
+
             }
+            // to protect against accidental deletion create a random confirmation value to send in the GET
+            $control_number = random_int(0, 99);
+            $random_characters = bin2hex(random_bytes(5));
+            $confirmation_str = ($id * $control_number) . $random_characters;
+            // save the control number and the created string in the session
+            $confirm = array('control' => $control_number, 'confirmation_str' => $confirmation_str);
+            $_SESSION['DeleteConfirmation'] = $confirm;
 
-
-
-
-        }else{header('Location: ../admin.php');}
-    }else{header('Location: ../index.php');}
-} else {header('Location: ../index.php');}
+        } else {
+            header('Location: ../admin.php');
+        }
+    } else {
+        header('Location: ../index.php');
+    }
+} else {
+    header('Location: ../index.php');
+}
 ?>
 
 <!doctype html>
@@ -69,6 +96,9 @@ if (isset($_SESSION['LoggedInUser'])) {
             <h6><a href="orders.php">Openstaande bestellingen</a></h6>
         </div>
     </div>
+    <?php if (!empty($errors)) { ?>
+        <div class="errors"><h2> <?= $errors['confirmation'] ?></h2></div>
+    <?php } ?>
     <?php { ?>
         <div class="product">
             <div class="thumbnail">
@@ -83,8 +113,9 @@ if (isset($_SESSION['LoggedInUser'])) {
             </div>
 
             <div class="productactions">
-                <div class="confirmdeletion" >
-                    <a href="delete.php?confirmation=<?=$product['id']?>&productid=<?=$product['id']?>"><img src="../icons/confirmdelete.svg" alt="Ja, Verwijder product."></a>
+                <div class="confirmdeletion">
+                    <a href="delete.php?confirmation=<?= $confirmation_str ?>&productid=<?= $product['id'] ?>"><img
+                                src="../icons/confirmdelete.svg" alt="Ja, Verwijder product."></a>
                 </div>
                 <div class="errors">
                     <h3>Weet je zeker dat je dit product wilt verwijderen?!</h3>
