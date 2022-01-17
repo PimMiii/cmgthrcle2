@@ -7,6 +7,12 @@ require_once '../includes/validation.php';
 /** @var mysqli $db */
 
 $errors = [];
+
+if(isset($_COOKIE['cart'])){
+    $fullcart = 1;
+} else {
+    $fullcart = 0;
+}
 // check if client is logged in as user
 if (isset($_SESSION['LoggedInUser'])) {
     //check if loggen in user is admin

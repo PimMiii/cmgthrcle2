@@ -7,6 +7,12 @@ require_once '../includes/validation.php';
 /** @var mysqli $db */
 
 $errors = [];
+
+if(isset($_COOKIE['cart'])){
+    $fullcart = 1;
+} else {
+    $fullcart = 0;
+}
 // check if client is logged in as user
 if (isset($_SESSION['LoggedInUser'])) {
     //check if loggen in user is admin
@@ -43,14 +49,15 @@ if (isset($_SESSION['LoggedInUser'])) {
                 }
 
 
+            } else {
+                // to protect against accidental deletion create a random confirmation value to send in the GET
+                $control_number = random_int(0, 99);
+                $random_characters = bin2hex(random_bytes(5));
+                $confirmation_str = ($id * $control_number) . $random_characters;
+                // save the control number and the created string in the session
+                $confirm = array('control' => $control_number, 'confirmation_str' => $confirmation_str);
+                $_SESSION['DeleteConfirmation'] = $confirm;
             }
-            // to protect against accidental deletion create a random confirmation value to send in the GET
-            $control_number = random_int(0, 99);
-            $random_characters = bin2hex(random_bytes(5));
-            $confirmation_str = ($id * $control_number) . $random_characters;
-            // save the control number and the created string in the session
-            $confirm = array('control' => $control_number, 'confirmation_str' => $confirmation_str);
-            $_SESSION['DeleteConfirmation'] = $confirm;
 
         } else {
             header('Location: ../admin.php');

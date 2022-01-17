@@ -6,6 +6,11 @@ require_once '../includes/products.php';
 require_once '../includes/validation.php';
 /** @var mysqli $db */
 
+if(isset($_COOKIE['cart'])){
+    $fullcart = 1;
+} else {
+    $fullcart = 0;
+}
 $errors = [];
 // check if client is logged in as user
 if (isset($_SESSION['LoggedInUser'])) {

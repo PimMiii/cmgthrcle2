@@ -4,6 +4,11 @@ require_once 'includes/database.php';
 /** @var mysqli $db */
 require_once 'includes/products.php';
 
+if(isset($_COOKIE['cart'])){
+    $fullcart = 1;
+} else {
+    $fullcart = 0;
+}
 
 if (isset($_SESSION['LoggedInUser'])) {
     //check if user has admin role
@@ -36,7 +41,7 @@ if (isset($_SESSION['LoggedInUser'])) {
         <div class="search"></div>
         <div class="navright">
             <div><a href="login.php"><img src="icons/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
-            <div><a href="cart.php"><img src="icons/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+            <div><a href="cart.php"><img src="icons/cart<?=$fullcart?>.svg" alt="Winkelwagen" class="cart"></a></div>
         </div>
     </div>
 </nav>

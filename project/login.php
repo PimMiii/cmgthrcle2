@@ -6,6 +6,11 @@ if(isset($_SESSION['LoggedInUser'])) {
 else {
     $login = false;
 }
+if(isset($_COOKIE['cart'])){
+    $fullcart = 1;
+} else {
+    $fullcart = 0;
+}
 
 if ($login == true){
     header('Location: profile.php');
@@ -84,7 +89,7 @@ if(isset($_POST['submit'])) {
         <div class="search"></div>
         <div class="navright">
             <div><a href="login.php"><img src="icons/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
-            <div><a href="cart.php"><img src="icons/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+            <div><a href="cart.php"><img src="icons/cart<?=$fullcart?>.svg" alt="Winkelwagen" class="cart"></a></div>
         </div>
     </div>
 </nav>

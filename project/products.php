@@ -10,6 +10,11 @@ if (isset($_SESSION['LoggedInUser'])) {
 } else {
     $user['role'] = 0;
 }
+if(isset($_COOKIE['cart'])){
+    $fullcart = 1;
+} else {
+    $fullcart = 0;
+}
 //retrieve all products from the database
 $products = getAllProducts($db, 'products', $user['role'])
 
@@ -32,7 +37,7 @@ $products = getAllProducts($db, 'products', $user['role'])
         <div class="search"></div>
         <div class="navright">
             <div><a href="login.php"><img src="icons/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
-            <div><a href="cart.php"><img src="icons/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+            <div><a href="cart.php"><img src="icons/cart<?=$fullcart?>.svg" alt="Winkelwagen" class="cart"></a></div>
         </div>
     </div>
 </nav>
@@ -59,7 +64,7 @@ $products = getAllProducts($db, 'products', $user['role'])
             </div>
             <div class="productactions">
                 <div class="addtocart">
-                    <a href=""><img src="icons/cartAdd.svg" alt="plaats product in winkelwagen" class="addtocart"></a>
+                    <a href="cart/add.php?page=products&productid=<?=$product['id']?>"><img src="icons/cartAdd.svg" alt="plaats product in winkelwagen" class="addtocart"></a>
                 </div>
                 <div class="price">
                     <h3><?= '€' . number_format($product['price'], 2, ",") ?></h3>

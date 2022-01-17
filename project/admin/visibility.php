@@ -3,7 +3,11 @@ session_start();
 require_once '../includes/products.php';
 require_once '../includes/database.php';
 /** @var mysqli $db */
-
+if(isset($_COOKIE['cart'])){
+    $fullcart = 1;
+} else {
+    $fullcart = 0;
+}
 if (isset($_GET['productid'])) {
     $id = htmlentities(mysqli_escape_string($db, $_GET['productid']));
     if (isset($_SESSION['LoggedInUser'])) {
