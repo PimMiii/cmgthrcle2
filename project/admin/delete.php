@@ -8,6 +8,7 @@ require_once '../includes/validation.php';
 
 $errors = [];
 
+// to set cart icon
 if(isset($_COOKIE['cart'])){
     $fullcart = 1;
 } else {

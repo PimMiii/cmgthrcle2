@@ -14,6 +14,7 @@ if (isset($_SESSION['LoggedInUser'])) {
 } else {
     $user['role'] = 0;
 }
+// to set cart icon
 if(isset($_COOKIE['cart'])){
     $fullcart = 1;
 } else {

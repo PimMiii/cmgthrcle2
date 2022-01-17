@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/initialize.php';
 require_once '../includes/database.php';
+// to set cart icon
 if(isset($_COOKIE['cart'])){
     $fullcart = 1;
 } else {

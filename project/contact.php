@@ -1,4 +1,5 @@
 <?php
+// to set cart icon
 if(isset($_COOKIE['cart'])){
     $fullcart = 1;
 } else {

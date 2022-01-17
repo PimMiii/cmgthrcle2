@@ -4,6 +4,7 @@ require_once 'includes/database.php';
 /** @var mysqli $db */
 require_once 'includes/products.php';
 
+// to set cart icon
 if(isset($_COOKIE['cart'])){
     $fullcart = 1;
 } else {

@@ -13,11 +13,11 @@ if (isset($_GET['productid'])) {
             $quantity = 1;
         }
         $cookie_value[$id] = $quantity;
-        setcookie('cart', json_encode($cookie_value), time() + strtotime('30 days'), "/");
+        setcookie('cart', json_encode($cookie_value), time() + (30*86400), "/"); //86400 is 1 day
     } else {
         $quantity = 1;
         $cookie_value[$id] = $quantity;
-        setcookie('cart', json_encode($cookie_value), time() + strtotime('30 days'), "/");
+        setcookie('cart', json_encode($cookie_value), time() + strtotime('+30 days'), "/");
     }
     if(isset($_GET['page'])){
         $page = htmlentities(mysqli_escape_string($db,$_GET['page']));
