@@ -49,11 +49,11 @@ if (isset($_SESSION['LoggedInUser'])) {
 <body>
 <nav>
     <div class="navcontent">
-        <div><a href="../index.php"><img src="../images/logo.bmp" alt="Homepagina" class="logo"></a></div>
+        <div><a href="../index.php"><img src="../icons/logo.bmp" alt="Homepagina" class="logo"></a></div>
         <div class="search"></div>
         <div class="navright">
-            <div><a href="../login.php"><img src="../images/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
-            <div><a href="../cart.php"><img src="../images/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
+            <div><a href="../login.php"><img src="../icons/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
+            <div><a href="../cart.php"><img src="../icons/cart0.svg" alt="Winkelwagen" class="cart"></a></div>
         </div>
     </div>
 </nav>
@@ -84,7 +84,7 @@ if (isset($_SESSION['LoggedInUser'])) {
 
             <div class="productactions">
                 <div class="confirmdeletion" >
-                    <a href="delete.php?confirmation=<?=$product['id']?>&productid=<?=$product['id']?>"><img src="../images/confirmdelete.svg" alt="Ja, Verwijder product."></a>
+                    <a href="delete.php?confirmation=<?=$product['id']?>&productid=<?=$product['id']?>"><img src="../icons/confirmdelete.svg" alt="Ja, Verwijder product."></a>
                 </div>
                 <div class="errors">
                     <h3>Weet je zeker dat je dit product wilt verwijderen?!</h3>
