@@ -71,7 +71,13 @@ nav .navright {
     background-color: unset;
     display: flex;
 }
+nav #active {
+    background-color: #BFDFFF;
+}
 
+nav #admin  {
+    background-color: #FF8589;
+}
 nav div img {
     margin: auto;
     border-radius: 5px;
@@ -206,6 +212,7 @@ table {
     column-count: 5;
     column-width: 10vw;
     column-gap: 5px;
+
 }
 
 th {
@@ -213,6 +220,8 @@ th {
     text-decoration: underline;
     font-size: 1.1em;
 }
+
+
 
 
 

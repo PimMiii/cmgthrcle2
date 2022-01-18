@@ -28,7 +28,7 @@ $products = getAllProducts($db, 'products', $user['role'])
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Products</title>
+    <title>Easygoods</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -44,6 +44,9 @@ $products = getAllProducts($db, 'products', $user['role'])
 </nav>
 <div class="main">
     <div class="quickactions">
+        <div class="backtohome">
+            <h6><a href="index.php">&#139;Terug naar Home</a></h6>
+        </div>
         <div class="contact">
             <h6><a href="contact.php">Contact</a></h6>
         </div>

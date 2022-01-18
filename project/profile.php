@@ -38,7 +38,7 @@ else {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Profile</title>
+    <title>Easygoods</title>
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -47,7 +47,7 @@ else {
         <div><a href="index.php"><img src="icons/logo.bmp" alt="Homepagina" class="logo"></a></div>
         <div class="search"></div>
         <div class="navright">
-            <div><a href="login.php"><img src="icons/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
+            <div id="active"><a href="login.php"><img src="icons/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
             <div><a href="cart.php"><img src="icons/cart<?=$fullcart?>.svg" alt="Winkelwagen" class="cart"></a></div>
         </div>
     </div>
