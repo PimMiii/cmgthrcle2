@@ -85,9 +85,14 @@ if(isset($_POST['submit'])) {
     </div>
 </nav>
 <div class="main">
-<h1> Nieuw account registreren.</h1>
+    <div class="quickactions">
+        <div class="login">
+            <h6><a href="login.php">Inloggen</a></h6>
+        </div>
+    </div>
 
 <form action="" method="post">
+    <h2>Nieuw account registreren</h2>
     <div>
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" value="<?= $email ?? '' ?>" required>

@@ -200,7 +200,20 @@ form {
     padding: 5vh 5vw;
     margin: 5vh 5vw;
 
+    }
+
+table {
+    column-count: 5;
+    column-width: 10vw;
+    column-gap: 5px;
 }
+
+th {
+    text-align: left;
+    text-decoration: underline;
+    font-size: 1.1em;
+}
+
 
 
 h1 {

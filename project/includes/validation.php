@@ -119,3 +119,7 @@ function validateProduct(array $data, array $errors) {
     return array('validated_data' => $data, 'errors' => $errors);
 }
 
+function validateCoupon(string $couponcode, array $errors, $id = null) {
+
+}
+

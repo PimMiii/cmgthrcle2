@@ -3,6 +3,7 @@
 require_once 'includes/database.php';
 /** @var mysqli $db */
 
+
 // to set cart icon
 if (isset($_COOKIE['cart'])) {
     $fullcart = 1;
@@ -10,30 +11,31 @@ if (isset($_COOKIE['cart'])) {
     $fullcart = 0;
 }
 
-
+$errors = [];
+$coupon['discount'] = '';
 
 
 if (isset($_COOKIE['cart'])) {
     $cart = json_decode($_COOKIE['cart'], true);
     if (isset($_POST['update'])) {
-    $cart = json_decode($_COOKIE['cart'], true);
-    $cart_ids = array_keys($cart);
-    $data = $_POST;
-    $posted_ids = array_keys($data);
-    // take the update key out of the array, so only the id's remain
-    unset($posted_ids['update']);
-    // check for every posted id, if it matches an id in cart, if so update the value in cart
-    foreach ($posted_ids as $pid) {
-        foreach ($cart_ids as $cid) {
-            $check_cid = "id" . $cid . "_quantity";
-            if ($check_cid == $pid) {
-                $cart[$cid] = htmlentities(mysqli_escape_string($db, $data[$pid]));
+        $cart = json_decode($_COOKIE['cart'], true);
+        $cart_ids = array_keys($cart);
+        $data = $_POST;
+        $posted_ids = array_keys($data);
+        // take the update key out of the array, so only the id's remain
+        unset($posted_ids['update']);
+        // check for every posted id, if it matches an id in cart, if so update the value in cart
+        foreach ($posted_ids as $pid) {
+            foreach ($cart_ids as $cid) {
+                $check_cid = "id" . $cid . "_quantity";
+                if ($check_cid == $pid) {
+                    $cart[$cid] = htmlentities(mysqli_escape_string($db, $data[$pid]));
+                }
             }
-        }
 
+        }
+        setcookie('cart', json_encode($cart), time() + (30 * 86400), "/");
     }
-    setcookie('cart', json_encode($cart), time() + (30 * 86400), "/");
-}
     $product_ids = array_keys($cart);
     $query = "SELECT `id`, `name`, `price`, `visible` FROM `products` WHERE ";
     $i = 0;
@@ -44,10 +46,13 @@ if (isset($_COOKIE['cart'])) {
     $query = preg_replace("/ OR $/", ';', $query);
     $result = mysqli_query($db, $query)
     or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+
+    $order_total = 0;
     if (mysqli_num_rows($result) != 0) {
         $products = [];
         while ($product = mysqli_fetch_assoc($result)) {
             $product['quantity'] = $cart[$product['id']];
+            $order_total += ($product['price'] * $product['quantity']);
             $products[] = $product;
         }
     }
@@ -89,12 +94,13 @@ if (isset($_COOKIE['cart'])) {
     <form action="" method="post">
         <table>
             <thead>
-            <h2>Winkelwagen</h2>
+            <tr>
+                <th>Winkelwagen</th>
+            </tr>
             </thead>
             <tbody>
             <?php foreach ($products as $product) { ?>
                 <tr>
-                    <td class="thumbnail"><?php // insert thumbnail here ?></td>
                     <td class="productname">
                         <?= $product['name'] ?>
                     </td>
@@ -113,19 +119,78 @@ if (isset($_COOKIE['cart'])) {
                     </td>
                 </tr>
             <?php }; ?>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3"><h3>Totaal: € <?= number_format($order_total, 2, ",") ?></h3></td>
+                <td colspan="2">
+                    <input type="submit" name="update" id="update" value="Update winkelwagen"></td>
+            </tr>
             </tbody>
         </table>
-        <input type="submit" name="update" id="update" value="Update winkelwagen">
-    </form>
-    <form>
-        <h3>Totaal: €</h3>
-        <input type="text" name="coupon" id="coupon" value="Kortingscode">
-        <input type="submit" name="checkcoupon" id="checkcoupon" value="Check Kortingscode"
-    </form>
-    <div class="order">
-        <a href="cart/order"><h6>Bestellen</h6></a>
-    </div>
 
+    </form>
+    <div class="cartactions">
+        <form action="" method="post">
+            <table>
+                <thead>
+                <tr>
+                    <th>Kortingscode</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="5"><span class="errors"><small><?= $errors['coupon'] ?? '' ?></small></h6></span></td>
+                </tr>
+                <tr>
+
+                    <td colspan="2"><input type="text" name="coupon" id="coupon"
+                                           value="<?= $coupon['name'] ?? "Kortingscode" ?>"></td>
+                    <td colspan="2"><input type="submit" name="checkcoupon" id="checkcoupon" value="Check Kortingscode">
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+        </form>
+        <form action="cart/order.php" method="post">
+            <table>
+                <thead>
+                <tr>
+                    <th>Bestellen</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="2">Totaal Winkelwagen:</td>
+                    <td colspan="1"> €</td>
+                    <td colspan="2"><?= number_format($order_total, 2, ",") ?></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Korting:<?= " " . $coupon['discount'] . "%" ?? '' ?></td>
+                    <td colspan="1"> €</td>
+                    <td colspan="2">Korting in bedrag</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Bestelling Totaal:</td>
+                    <td colspan="1"> €</td>
+                    <td colspan="2"><?= number_format($order_total, 2, ",") ?> </td>
+
+                </tr>
+                <tr>
+
+                    <td colspan="2"><input type="submit" name="order" id="order" value="Bestellen"</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+        </form>
+
+
+    </div>
 </div>
 </body>
 </html>
