@@ -119,7 +119,8 @@ function validateProduct(array $data, array $errors) {
     return array('validated_data' => $data, 'errors' => $errors);
 }
 
+// function to validate couponcodes that users enter in at checkout, and check it against a database table.
 function validateCoupon(string $couponcode, array $errors, $id = null) {
-
+    // PLACEHOLDER
 }
 
