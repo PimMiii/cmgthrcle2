@@ -30,7 +30,7 @@ if(isset($_GET['order'])) {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Easygoods</title>
+    <title>EasyGoods</title>
     <link rel="stylesheet" href="../style.css"/>
 </head>
 <body>
@@ -55,7 +55,7 @@ if(isset($_GET['order'])) {
     </div>
     <div class="product">
         <p>Simulating payment....</p>
-        <p>order: <?= $order_id ?? ''?></p>
+        <p>order: <?= strtoupper($order_id) ?? ''?></p>
 
 
     </div>
