@@ -37,7 +37,12 @@ if (isset($_SESSION['LoggedInUser'])) {
 
                 // update product in database if there are no errors
                 if (empty($errors)) {
-                    $query = "INSERT INTO `products`(`name`, `description`, `price`, `visible`) VALUES ('" . $data['name'] . "','" . $data['description'] . "','" . $data['price'] . "','" . $data['visible'] . "');";
+                    $query = "INSERT INTO `products`(`name`, `description`, `price`, `visible`)
+                                VALUES (
+                                        '" . $data['name'] . "',
+                                        '" . $data['description'] . "',
+                                        '" . $data['price'] . "',
+                                        '" . $data['visible'] . "');";
                     $result = mysqli_query($db, $query)
                     or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
 
@@ -45,10 +50,6 @@ if (isset($_SESSION['LoggedInUser'])) {
                     header('Location: ../admin.php');
                 }
             }
-
-
-
-
 
     }else{header('Location: ../index.php');}
 } else {header('Location: ../index.php');}

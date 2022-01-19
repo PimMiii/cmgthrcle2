@@ -117,9 +117,7 @@ if (isset($_SESSION['LoggedInUser'])) {
             </div>
             <div class="productdescription">
                 <p><?= $product['description'] ?></p>
-
             </div>
-
             <div class="productactions">
                 <div class="confirmdeletion">
                     <a href="delete.php?confirmation=<?= $confirmation_str ?>&productid=<?= $product['id'] ?>"><img
@@ -128,7 +126,6 @@ if (isset($_SESSION['LoggedInUser'])) {
                 <div class="errors">
                     <h3>Weet je zeker dat je dit product wilt verwijderen?!</h3>
                 </div>
-
             </div>
         </div>
     <?php }; ?>

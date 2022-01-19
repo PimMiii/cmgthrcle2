@@ -20,6 +20,7 @@ if(isset($_GET['order'])) {
     $order_id= htmlentities(mysqli_escape_string($db, $_GET['order']));
 }
 
+header('refresh:5;url=../order.php?orderid='.$order_id);
 ?>
 
 

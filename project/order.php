@@ -3,6 +3,11 @@ session_start();
 require_once 'includes/products.php';
 require_once 'includes/database.php';
 /** @var mysqli $db */
+if (isset($_GET['orderid'])) {
+    $id = htmlentities(mysqli_escape_string($db, $_GET['orderid']));
+} else {
+    $errors['product'] = "Sorry, er is iets fout gegaan. Dit product kan niet worden gevonden.";
+}
 
 if (isset($_SESSION['LoggedInUser'])) {
     $user ['role'] = $_SESSION['LoggedInUser']['role'];
@@ -15,8 +20,9 @@ if(isset($_COOKIE['cart'])){
 } else {
     $fullcart = 0;
 }
-//retrieve all products from the database
-$products = getAllProducts($db, 'index', $user['role'])
+//retrieve order from the database
+
+
 ?>
 
 
@@ -50,29 +56,11 @@ $products = getAllProducts($db, 'index', $user['role'])
             <h6><a href="contact.php">Contact</a></h6>
         </div>
     </div>
-    <?php foreach ($products as $product) { ?>
+    <?php { ?>
         <div class="product">
-            <div class="thumbnail">
-                <?php // insert thumbnail here ?>
-            </div>
-            <div class="productname">
-                <h2><?= $product['name'] ?></h2>
-            </div>
-            <div class="productdescription">
-                <p><?= substr($product['description'], 0, 250) ?>... <a
-                            href="product.php?productid=<?= $product['id'] ?>"><small>meer weergeven&#155;</small></a>
-                </p>
+            <p>Order: <?= $id ?? '' ?></p>
+            <p>Orderinfo moet hier komen.</p>
 
-            </div>
-            <div class="productactions">
-                <div class="addtocart">
-                    <a href="cart/add.php?productid=<?=$product['id']?>">
-                        <img src="icons/cartAdd.svg" alt="stop product in winkelwagen" class="addtocart"></a>
-                </div>
-                <div class="price">
-                    <h3><?= '€' . number_format($product['price'], 2, ",") ?></h3>
-                </div>
-            </div>
         </div>
     <?php }; ?>
 

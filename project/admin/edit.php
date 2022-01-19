@@ -27,7 +27,8 @@ if (isset($_SESSION['LoggedInUser'])) {
                 $data = array(
                         'name' => htmlentities(mysqli_escape_string($db, $_POST['name'])),
                         'description' => htmlentities($_POST['description']),
-                        'price' => number_format(mysqli_escape_string($db, $_POST['price']), 4, "."),
+                        'price' => number_format(mysqli_escape_string($db, $_POST['price']),
+                            4, "."),
                         'visible' => 0
                 );
                 //check if checkbox has been checked
@@ -41,19 +42,18 @@ if (isset($_SESSION['LoggedInUser'])) {
 
                 // update product in database if there are no errors
                 if (empty($errors)) {
-                    $query = "UPDATE `products` SET `name`='" . $data['name'] . "',`description`='" . $data['description'] . "',`price`='" . $data['price'] . "',`visible`='" . $data['visible'] . "' WHERE `id` = '$id';";
+                    $query = "UPDATE `products` SET `name`='" . $data['name'] . "',
+                                `description`='" . $data['description'] . "',
+                                `price`='" . $data['price'] . "',
+                                `visible`='" . $data['visible'] . "' 
+                                WHERE `id` = '$id';";
                     $result = mysqli_query($db, $query)
                     or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
 
                     //redirect client back to adminportal
                     header('Location: ../admin.php');
                 }
-
             }
-
-
-
-
         }else{header('Location: ../admin.php');}
     }else{header('Location: ../index.php');}
 } else {header('Location: ../index.php');}

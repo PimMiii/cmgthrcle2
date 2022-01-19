@@ -82,7 +82,8 @@ if (isset($_POST['submit'])) {
                     $profile_id = mysqli_insert_id($db);
                     // update user in db
                     if (isset($_POST['make_login'])) {
-                        $query = "UPDATE `users` SET `profile_id` = '$profile_id', `email` = '" . $changed_profile['email'] . "' WHERE `id` = '$id';";
+                        $query = "UPDATE `users` SET `profile_id` = '$profile_id',
+                                    `email` = '" . $changed_profile['email'] . "' WHERE `id` = '$id';";
                     } else {
                         $query = "UPDATE `users` SET `profile_id` = '$profile_id' WHERE `id` = '$id';";
                     }

@@ -4,7 +4,7 @@ require_once '../includes/products.php';
 require_once '../includes/database.php';
 /** @var mysqli $db */
 // to set cart icon
-if(isset($_COOKIE['cart'])){
+if (isset($_COOKIE['cart'])) {
     $fullcart = 1;
 } else {
     $fullcart = 0;
@@ -66,8 +66,10 @@ if (isset($_GET['productid'])) {
         <div><a href="../index.php"><img src="../icons/logo.bmp" alt="Homepagina" class="logo"></a></div>
         <div class="search"></div>
         <div class="navright">
-            <div id="admin"><a href="../login.php"><img src="../icons/profile.svg" alt="Mijn Proffiel" class="profile"></a></div>
-            <div><a href="../cart.php"><img src="../icons/cart<?=$fullcart?>.svg" alt="Winkelwagen" class="cart"></a></div>
+            <div id="admin"><a href="../login.php"><img src="../icons/profile.svg" alt="Mijn Proffiel" class="profile"></a>
+            </div>
+            <div><a href="../cart.php"><img src="../icons/cart<?= $fullcart ?>.svg" alt="Winkelwagen" class="cart"></a>
+            </div>
         </div>
     </div>
 </nav>

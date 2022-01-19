@@ -48,7 +48,7 @@ if (isset($_GET['orderid'])) {
                 $processed_order['user_id'] = $user['id'];
             } else {
                 $user['profile'] = $posted_profile;
-                $processed_order['user_id'] = null;
+                $processed_order['user_id'] = 'NULL';
             }
             // check if profile_id is set.
             if (!isset($processed_order['profile_id'])) {
