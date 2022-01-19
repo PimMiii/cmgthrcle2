@@ -132,5 +132,6 @@ if (isset($_SESSION['LoggedInUser'])) {
         </form>
     </div>
 </div>
+
 </body>
 </html>
