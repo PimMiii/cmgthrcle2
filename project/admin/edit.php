@@ -113,7 +113,7 @@ if (isset($_SESSION['LoggedInUser'])) {
                     <span class="errors"><?= $errors['price'] ?? '' ?></span>
                 </div>
                 <div>
-                    <label for="description">Productnaam: </label>
+                    <label for="description">Productbeschrijving: </label>
                     <span class="errors"><?= $errors['description'] ?? '' ?></span>
                     <textarea name="description" id="description"
                               required><?= $data['description'] ?? $product['description'] ?? '' ?></textarea>
@@ -127,7 +127,7 @@ if (isset($_SESSION['LoggedInUser'])) {
                 </div>
             </div>
             <div>
-                <input type="submit" name="submit" id="submit" value="Product toevoegen">
+                <input type="submit" name="submit" id="submit" value="Opslaan">
             </div>
         </form>
     </div>
