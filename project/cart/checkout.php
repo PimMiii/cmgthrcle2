@@ -18,7 +18,7 @@ if (isset($_COOKIE['cart'])) {
 $errors = [];
 
 if (isset($_GET['orderid'])) {
-    $order_id = htmlentities(mysqli_escape_string($db, $_GET['orderid']));
+    $cart_id = htmlentities(mysqli_escape_string($db, $_GET['orderid']));
     if (isset($_SESSION['LoggedInUser'])) {
         $user = $_SESSION['LoggedInUser'];
         $user['profile'] = getUserProfile($user['id'], $db);
@@ -52,15 +52,51 @@ if (isset($_GET['orderid'])) {
             }
             // check if profile_id is set.
             if (!isset($processed_order['profile_id'])) {
-                $query = "INSERT INTO `profiles`(`first_name`, `last_name`, `street`, `house_number`, `postal_code`, `city`, `email`)
- VALUES ('" . $user['profile']['first_name'] . "','" . $user['profile']['last_name'] . "','" . $user['profile']['street'] . "','" . $user['profile']['house_number'] . "','" . $user['profile']['postal_code'] . "','" . $user['profile']['city'] . "','" . $user['profile']['email'] . "');";
+                $query = "INSERT INTO `profiles`(`first_name`, `last_name`, `street`, `house_number`,
+                                                `postal_code`, `city`, `email`)
+                            VALUES (
+                                    '" . $user['profile']['first_name'] . "',
+                                    '" . $user['profile']['last_name'] . "',
+                                    '" . $user['profile']['street'] . "',
+                                    '" . $user['profile']['house_number'] . "',
+                                    '" . $user['profile']['postal_code'] . "',
+                                    '" . $user['profile']['city'] . "',
+                                    '" . $user['profile']['email'] . "');";
                 $result = mysqli_query($db, $query)
                 or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
                 $processed_order['profile_id'] = mysqli_insert_id($db);
             }
             // profile_id should now be set
             if (isset($processed_order['profile_id'])) {
-                // we can post the order to the db, and get it ready for payment.
+                //encode cart to JSON
+                $cart = json_encode($processed_order['cart']);
+                $order_total = $processed_order['total'];
+                $order_paid = 0;
+                $user_id = $processed_order['user_id'];
+                $profile_id = $processed_order['profile_id'];
+                // post order to db
+                $query = "INSERT INTO `orders`(`cart`, `total_price`, `order_paid`, `user_id`, `profile_id`) 
+                            VALUES ('$cart','$order_total','$order_paid','$user_id','$profile_id');";
+                $result = mysqli_query($db, $query)
+                or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+                //retrieve assigned id, to write into the lookup table with the hashed id
+                $order_id = mysqli_insert_id($db);
+                // create a hashed id
+                $input = $processed_order['order_id'].time().$order_id;
+                $hashed_id = hash('sha256', $input);
+                $hashed_id = 'EG'.date('y', time()).$hashed_id;
+                // write to db
+                $query = "INSERT INTO `orderid_lookup`(`order_id`, `hashed_id`)
+                            VALUES ('$order_id','$hashed_id');";
+                $result = mysqli_query($db, $query)
+                or die('DB ERROR: ' . mysqli_error($db) . " with query: " . $query);
+                // discard the cart cookie, now that order is placed
+                unset($_COOKIE['cart']);
+                setcookie('cart', '', time()-3600 , '/');
+                //redirect client to (simluated)payment page using the hashed id
+                header('Location: simulatepayment.php?order='.$hashed_id);
+
+
 
             }
 
@@ -72,7 +108,7 @@ if (isset($_GET['orderid'])) {
     } else {
         header('Location: ../cart.php');
     }
-    if ($order_id == $order['id']) {
+    if ($cart_id == $order['id']) {
         $cart = $order['cart'];
         $coupon = $order['coupon'];
         $order_id = $order['id'];
